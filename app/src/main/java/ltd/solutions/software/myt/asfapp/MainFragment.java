@@ -5,8 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class MainFragment extends Fragment {
 
@@ -26,5 +30,14 @@ public class MainFragment extends Fragment {
         viewPager = (ViewPager) getView().findViewById(R.id.view_pager);
         adapter = new CustomSwipeAdapter(getView().getContext());
         viewPager.setAdapter(adapter);
+        setHasOptionsMenu(true);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.adminmenu , menu);
+    }
+
+
 }
