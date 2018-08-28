@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return loadFragment(fragment);
     }
 
+    //Adding a comment to check the commits in github
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
