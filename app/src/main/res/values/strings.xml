@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">ASFPerformance</string>
     <string name="title_home">Home</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_profile">Info</string>
     <string name="title_classes">Classes</string>
     <string name="welcome">ASF AND PERFORMANCE</string>
     <string name="admin">Admin</string>
+    <string name="date">Select a date:</string>
 </resources>
