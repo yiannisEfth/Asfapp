@@ -15,11 +15,15 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        iButton=(ImageButton)getView().findViewById(R.id.img_button1);
-        fbButton=(ImageButton)getView().findViewById(R.id.img_button2);
-
         return inflater.inflate(R.layout.profile_fragment, null);
     }
 
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        iButton=(ImageButton)getView().findViewById(R.id.img_button1);
+        fbButton=(ImageButton)getView().findViewById(R.id.img_button2);
+
+    }
 }

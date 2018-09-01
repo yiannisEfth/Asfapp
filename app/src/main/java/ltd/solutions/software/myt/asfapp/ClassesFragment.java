@@ -43,7 +43,7 @@ public class ClassesFragment extends Fragment {
         classList.setLayoutManager(listloManager);
         listAdapter = new ClassesAdapter(classes);
         classList.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();;
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
