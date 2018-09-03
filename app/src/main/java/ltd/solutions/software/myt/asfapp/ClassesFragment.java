@@ -3,6 +3,7 @@ package ltd.solutions.software.myt.asfapp;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,10 +24,9 @@ import java.util.Locale;
 
 public class ClassesFragment extends Fragment {
 
-    private RecyclerView classList;
-    private RecyclerView.Adapter listAdapter;
-    private RecyclerView.LayoutManager listloManager;
-    private String[] classes = new String[2];
+    private RecyclerView classListView;
+    private List<ClassObject> classesList = new ArrayList<>();
+    private ClassesAdapter classesAdapter;
 
     @Nullable
     @Override
@@ -35,15 +37,32 @@ public class ClassesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        classes[0] = "test1";
-        classes[1] = "test2";
-        classList = (RecyclerView) getView().findViewById(R.id.classView);
-        classList.hasFixedSize();
-        listloManager = new LinearLayoutManager(this.getContext());
-        classList.setLayoutManager(listloManager);
-        listAdapter = new ClassesAdapter(classes);
-        classList.setAdapter(listAdapter);
-        listAdapter.notifyDataSetChanged();
+        classListView = (RecyclerView) getView().findViewById(R.id.classView);
+        classesAdapter = new ClassesAdapter(classesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext().getApplicationContext());
+        classListView.setLayoutManager(mLayoutManager);
+        classListView.setItemAnimator(new DefaultItemAnimator());
+        classListView.setAdapter(classesAdapter);
+        String firstDate = "04/05/2018";
+        String secondDate = "05/05/2018";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date dateObj = null;
+        try {
+            dateObj = dateFormat.parse(firstDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ClassObject class1 = new ClassObject("Pilates", 5, 3, dateObj);
+        dateObj = null;
+        try {
+            dateObj = dateFormat.parse(secondDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ClassObject class2 = new ClassObject("Body Pump", 7, 1, dateObj);
+        classesList.add(class1);
+        classesList.add(class2);
+        classesAdapter.notifyDataSetChanged();
     }
 
     @Override
