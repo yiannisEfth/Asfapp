@@ -22,8 +22,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        iButton=(ImageButton)getView().findViewById(R.id.img_button1);
-        fbButton=(ImageButton)getView().findViewById(R.id.img_button2);
+        iButton=(ImageButton)getView().findViewById(R.id.img_button2);
+
+
+        fbButton=(ImageButton)getView().findViewById(R.id.img_button1);
 
     }
 }
