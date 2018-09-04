@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 
 public class ProfileFragment extends Fragment {
 
-    ImageButton iButton,fbButton,twitterButton;
+
 
     @Nullable
     @Override
@@ -24,33 +24,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        iButton=(ImageButton)getView().findViewById(R.id.img_button2);
-        fbButton=(ImageButton)getView().findViewById(R.id.img_button1);
-        twitterButton=(ImageButton)getView().findViewById(R.id.img_button3);
-
-        iButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent instaIntent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/asf.performance.cy/"));
-                startActivity(instaIntent);
-            }
-        });
-
-        fbButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent fbIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.facebook.com/ASF.PERFORMANCE/"));
-                startActivity(fbIntent);
-            }
-        });
-
-        twitterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent twitterIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/asf_performance"));
-                startActivity(twitterIntent);
-            }
-        });
 
     }
 }
