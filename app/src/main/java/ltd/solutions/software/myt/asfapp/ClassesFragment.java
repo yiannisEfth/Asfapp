@@ -6,11 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -19,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +35,10 @@ public class ClassesFragment extends Fragment {
 
     private RecyclerView classListView;
     private List<ClassObject> classesList = new ArrayList<>();
+    private List<ClassObject> dummyList = new ArrayList<>();
     private ClassesAdapter classesAdapter;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference classesReference = database.getReference("Classes");
 
     @Nullable
     @Override
@@ -43,26 +55,8 @@ public class ClassesFragment extends Fragment {
         classListView.setLayoutManager(mLayoutManager);
         classListView.setItemAnimator(new DefaultItemAnimator());
         classListView.setAdapter(classesAdapter);
-        String firstDate = "04/05/2018";
-        String secondDate = "05/05/2018";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date dateObj = null;
-        try {
-            dateObj = dateFormat.parse(firstDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ClassObject class1 = new ClassObject("Pilates", 5, 3, dateObj);
-        dateObj = null;
-        try {
-            dateObj = dateFormat.parse(secondDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ClassObject class2 = new ClassObject("Body Pump", 7, 1, dateObj);
-        classesList.add(class1);
-        classesList.add(class2);
-        classesAdapter.notifyDataSetChanged();
+        setUpFirebase();
+
     }
 
     @Override
@@ -81,6 +75,7 @@ public class ClassesFragment extends Fragment {
         }
         String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         List<String> dateList = new ArrayList<>();
+        dateList.add("Select A Date");
         dateList.add(date);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -95,5 +90,48 @@ public class ClassesFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, dateList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dateSpinner.setAdapter(adapter);
+
+        dateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!adapterView.getItemAtPosition(i).toString().equals("Select A Date")) {
+                    classesList.clear();
+                    String date = adapterView.getItemAtPosition(i).toString();
+                    for (ClassObject co : dummyList) {
+                        if (date.equals(co.getClassDate())) {
+                            classesList.add(co);
+                        }
+                    }
+                    classesAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+
+        });
+    }
+
+    public void setUpFirebase() {
+        classesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dummyList.clear();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    ClassObject dbClass = child.getValue(ClassObject.class);
+                    dummyList.add(dbClass);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

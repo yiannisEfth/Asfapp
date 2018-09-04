@@ -39,9 +39,7 @@ public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ClassObject classObject = classList.get(position);
         holder.className.setText(classObject.getClassName());
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String formattedDate = df.format(classObject.getClassDate());
-        holder.classDate.setText(formattedDate);
+        holder.classDate.setText(classObject.getClassDate());
         holder.classSpots.setText(Integer.toString(classObject.getAvailablePlaces()));
     }
 

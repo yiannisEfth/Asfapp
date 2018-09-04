@@ -12,13 +12,23 @@ public class ClassObject {
     private String className;
     private int availablePlaces;
     private int reservedPlaces;
-    private Date classDate;
+    private String classDate;
+    private int ID;
+    private String time;
 
-    public ClassObject(String className, int avaiablePlaces, int reservedPlaces, Date classDate) {
+    //default constructor from database
+    public ClassObject() {
+
+    }
+
+    public ClassObject(String className, int avaiablePlaces, int reservedPlaces, String classDate, int ID, String time) {
         this.className = className;
         this.availablePlaces = avaiablePlaces;
         this.reservedPlaces = reservedPlaces;
         this.classDate = classDate;
+        this.ID = ID;
+        this.time = time;
+
     }
 
     public String getClassName() {
@@ -33,8 +43,24 @@ public class ClassObject {
         return reservedPlaces;
     }
 
-    public Date getClassDate() {
+    public String getClassDate() {
         return classDate;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setClassName(String className) {
@@ -49,7 +75,7 @@ public class ClassObject {
         this.reservedPlaces = reservedPlaces;
     }
 
-    public void setClassDate(Date classDate) {
+    public void setClassDate(String classDate) {
         this.classDate = classDate;
     }
 }
