@@ -10,11 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GymInfoFragment extends Fragment {
+
+public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
     ImageButton iButton,fbButton,twitterButton;
+    GoogleMap mGoogleMap;
+    MapView mapView;
+    View mView;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.gyminfo_fragment, null);
+       mView= inflater.inflate(R.layout.gyminfo_fragment, null);
+       return mView;
     }
 
     @Override
@@ -47,6 +60,26 @@ public class GymInfoFragment extends Fragment {
                 startActivity(twitterIntent);
             }
         });
+
+        mapView=(MapView)mView.findViewById(R.id.map);
+        if (mapView != null){
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        MapsInitializer.initialize(getContext());
+        mGoogleMap = googleMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.addMarker(new MarkerOptions().position((new LatLng(34.6866451, 33.0254199))).title("Asf & Performance"));
+
+        CameraPosition Asf= CameraPosition.builder().target(new LatLng(34.6866451, 33.0254199)).zoom(16).bearing(0).tilt(45).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Asf));
 
     }
 }
