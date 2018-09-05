@@ -5,4 +5,9 @@
     <color name="colorAccent">#ccfbff00</color>
     <color name="colorNavIcon">#686868</color>
     <color name="colorNavText">#000000</color>
+    <color name="app_color_granite_grey">#627264</color>
+    <color name="app_color_cambridge_blue">#A1CDA8</color>
+    <color name="app_color_sunny">#EDFF7A</color>
+    <color name="app_color_powder_blue">#B5DFCA</color>
+    <color name="app_color_gray">#BCBDC0</color>
 </resources>
