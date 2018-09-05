@@ -1,85 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".GymInfoFragment">
 
-    <RelativeLayout
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight=".5">
+        android:text="@string/hello_blank_fragment" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_weight=".5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/social"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find us on Social Media !!!"
-            android:layout_marginStart="5dp"
-            android:textSize="25dp"
-            android:textStyle="bold"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/img_button1"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:background="@drawable/facebook"
-            android:layout_marginStart="5dp"/>
-        <ImageButton
-            android:id="@+id/img_button2"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:background="@drawable/instagram"/>
-        </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:text="Contact us:"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-        <TextView
-            android:layout_marginStart="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Telephone:"
-            android:layout_marginStart="5dp"/>
-        <TextView
-            android:layout_marginStart="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email:"/>
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
-
-</LinearLayout>
+</FrameLayout>

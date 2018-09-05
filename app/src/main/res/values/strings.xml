@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">ASFPerformance</string>
     <string name="title_home">Home</string>
-    <string name="title_profile">Info</string>
+    <string name="title_info">Info</string>
+    <string name="title_profile">Profile</string>
     <string name="title_classes">Classes</string>
     <string name="welcome">ASF AND PERFORMANCE</string>
     <string name="admin">Admin</string>
@@ -9,4 +10,7 @@
     <string name="address">3,Lefkonoikou street,3071,Limassol-Cyprus</string>
     <string name="email">as.fitness.cy@gmail.com</string>
     <string name="telephone">99851085</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

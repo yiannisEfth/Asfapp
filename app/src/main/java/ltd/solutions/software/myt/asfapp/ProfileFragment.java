@@ -1,5 +1,7 @@
 package ltd.solutions.software.myt.asfapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +12,7 @@ import android.widget.ImageButton;
 
 public class ProfileFragment extends Fragment {
 
-    ImageButton iButton,fbButton;
+
 
     @Nullable
     @Override
@@ -22,10 +24,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        iButton=(ImageButton)getView().findViewById(R.id.img_button2);
-
-
-        fbButton=(ImageButton)getView().findViewById(R.id.img_button1);
 
     }
 }

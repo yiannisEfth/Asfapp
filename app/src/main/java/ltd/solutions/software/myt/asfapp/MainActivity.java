@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.navigation_profile:
                 fragment = new ProfileFragment();
                 break;
+            case R.id.navigation_info:
+                fragment = new GymInfoFragment();
+                break;
         }
         return loadFragment(fragment);
     }

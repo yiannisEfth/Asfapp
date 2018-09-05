@@ -3,9 +3,9 @@
 
 
     <item
-        android:id="@+id/navigation_profile"
-        android:icon="@drawable/baseline_person_black_24dp"
-        android:title="@string/title_profile" />
+        android:id="@+id/navigation_info"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:title="@string/title_info" />
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
@@ -14,5 +14,9 @@
         android:id="@+id/navigation_classes"
         android:icon="@drawable/baseline_calendar_today_black_24dp"
         android:title="@string/title_classes" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/baseline_person_black_24dp"
+        android:title="@string/title_profile" />
 
 </menu>
