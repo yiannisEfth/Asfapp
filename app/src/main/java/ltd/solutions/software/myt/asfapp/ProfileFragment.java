@@ -16,6 +16,7 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,6 +36,7 @@ public class ProfileFragment extends Fragment {
     private ImageView dateStartedEdit;
     private ImageView idEdit;
     private TextView nameText, surnameText, heightText, weightText, dateStartedText, idText;
+    private Button clearAllBtn;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
@@ -49,15 +51,16 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-//        sharedPref = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-//        editor = sharedPref.edit();
-//        initialSetup();
-//        nameSetup();
-//        surnameSetup();
-//        heightSetup();
-//        weightSetup();
-//        dateStartedSetup();
-//        idSetup();
+        sharedPref = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+        initialSetup();
+        nameSetup();
+        surnameSetup();
+        heightSetup();
+        weightSetup();
+        dateStartedSetup();
+        idSetup();
+        buttonSetup();
     }
 
     @Override
@@ -77,6 +80,8 @@ public class ProfileFragment extends Fragment {
         weightText = view.findViewById(R.id.profile_weight_input);
         dateStartedText = view.findViewById(R.id.profile_started_input);
         idText = view.findViewById(R.id.profile_id_input);
+        //Button
+        clearAllBtn = view.findViewById(R.id.profile_button_clear);
 
     }
 
@@ -111,6 +116,7 @@ public class ProfileFragment extends Fragment {
                         if (Pattern.matches("[A-z]{0,20}", input.getText().toString())) {
                             nameText.setText(input.getText().toString());
                             editor.putString("name", input.getText().toString());
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Invalid input. Name can only contain letters and no spaces.", Toast.LENGTH_LONG).show();
                         }
@@ -144,6 +150,7 @@ public class ProfileFragment extends Fragment {
                         if (Pattern.matches("[A-z]{0,20}", input.getText().toString())) {
                             surnameText.setText(input.getText().toString());
                             editor.putString("surname", input.getText().toString());
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Invalid input. Surname can only contain letters and no spaces.", Toast.LENGTH_LONG).show();
                         }
@@ -178,6 +185,7 @@ public class ProfileFragment extends Fragment {
                         if (Pattern.matches("(8[0-9]|9[0-9]|1[0-9]{2}|2[0-6][0-9]|270)", input.getText().toString())) {
                             heightText.setText(input.getText().toString());
                             editor.putString("height", input.getText().toString());
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Invalid Height. Must be between 80 and 270 cm", Toast.LENGTH_LONG).show();
                         }
@@ -212,6 +220,7 @@ public class ProfileFragment extends Fragment {
                         if (Pattern.matches("\\b([3-8][0-9]|9[0-9]|[1-4][0-9]{2}|5[0-4][0-9]|550)\\b", input.getText().toString())) {
                             weightText.setText(input.getText().toString());
                             editor.putString("weight", input.getText().toString());
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Invalid Weight. Must be between 30 and 550 kg", Toast.LENGTH_LONG).show();
                         }
@@ -242,6 +251,7 @@ public class ProfileFragment extends Fragment {
                         if (year > 1950) {
                             dateStartedText.setText(date);
                             editor.putString("dateStarted", date);
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Please enter a more recent year", Toast.LENGTH_SHORT).show();
                         }
@@ -282,6 +292,7 @@ public class ProfileFragment extends Fragment {
                         if (Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString())) {
                             idText.setText(input.getText().toString());
                             editor.putString("id", input.getText().toString());
+                            editor.commit();
                         } else {
                             Toast.makeText(getContext(), "Invalid input. ID is a 6-digit number", Toast.LENGTH_LONG).show();
                         }
@@ -295,6 +306,27 @@ public class ProfileFragment extends Fragment {
                 });
 
                 builder.show();
+            }
+        });
+    }
+
+    public void buttonSetup() {
+        clearAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameText.setText("");
+                surnameText.setText("");
+                heightText.setText("");
+                weightText.setText("");
+                dateStartedText.setText("");
+                idText.setText("");
+                editor.remove("name");
+                editor.remove("surname");
+                editor.remove("weight");
+                editor.remove("height");
+                editor.remove("dateStarted");
+                editor.remove("id");
+                editor.commit();
             }
         });
     }
