@@ -1,5 +1,6 @@
 package ltd.solutions.software.myt.asfapp;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +42,9 @@ public class ClassesFragment extends Fragment {
     private ClassesAdapter classesAdapter;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference classesReference = database.getReference("Classes");
+    private Calendar calendar;
+    private DatePickerDialog.OnDateSetListener date;
+    private String datePicked;
 
     @Nullable
     @Override
@@ -62,58 +68,39 @@ public class ClassesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Spinner dateSpinner = (Spinner) getView().findViewById(R.id.datespinner);
-        //to create a smaller pop up window for spinner
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(dateSpinner);
-            // Set popupWindow height to 700px
-            popupWindow.setHeight(700);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-
-        }
-        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-        List<String> dateList = new ArrayList<>();
-        dateList.add("Select A Date");
-        dateList.add(date);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        //for loop that gets all the dates within 2 weeks
-        for (int i = 1; i < 14; i++) {
-            //instance to get dates from calendar
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, +i);
-            String nextDates = dateFormat.format(calendar.getTime());
-            dateList.add(nextDates);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, dateList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dateSpinner.setAdapter(adapter);
-
-        dateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
+        Button dateBtn = (Button) getView().findViewById(R.id.datespinner);
+        calendar = Calendar.getInstance();
+        //making the datepicked variable the same as the date picked from the calendar
+        date = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (!adapterView.getItemAtPosition(i).toString().equals("Select A Date")) {
-                    classesList.clear();
-                    String date = adapterView.getItemAtPosition(i).toString();
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                String formatDate = "dd/MM/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(formatDate , Locale.US);
+                datePicked =  sdf.format(calendar.getTime());
+            }
+        };
+        //Show the calendar to pick a date
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new DatePickerDialog(getContext(), date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+
+            }
+        });
                     for (ClassObject co : dummyList) {
-                        if (date.equals(co.getClassDate())) {
+                        if (datePicked.equals(co.getClassDate())) {
                             classesList.add(co);
                         }
                     }
-                    classesAdapter.notifyDataSetChanged();
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-
-        });
-    }
 
     public void setUpFirebase() {
         classesReference.addValueEventListener(new ValueEventListener() {
