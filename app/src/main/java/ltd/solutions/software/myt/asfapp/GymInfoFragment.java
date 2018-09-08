@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
-    ImageButton iButton,fbButton,twitterButton;
+    ImageButton iButton,fbButton,twitterButton,wwwButton;
     GoogleMap mGoogleMap;
     MapView mapView;
     View mView;
@@ -36,6 +36,7 @@ public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
         iButton=(ImageButton)getView().findViewById(R.id.img_button2);
         fbButton=(ImageButton)getView().findViewById(R.id.img_button1);
         twitterButton=(ImageButton)getView().findViewById(R.id.img_button3);
+        wwwButton=(ImageButton)getView().findViewById(R.id.img_button4);
 
         iButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,13 @@ public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent twitterIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/asf_performance"));
+                startActivity(twitterIntent);
+            }
+        });
+        wwwButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent twitterIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://asf-performance.com/"));
                 startActivity(twitterIntent);
             }
         });

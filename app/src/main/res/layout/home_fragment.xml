@@ -17,6 +17,8 @@
             android:layout_centerHorizontal="true"
             android:text="@string/welcome"
             android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/profile_button_style"
             android:textAppearance="@color/colorPrimaryDark"
             android:textSize="35sp"
             android:textStyle="bold" />

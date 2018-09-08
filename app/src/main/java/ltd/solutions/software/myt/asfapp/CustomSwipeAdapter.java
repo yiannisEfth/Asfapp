@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
  */
 
 public class CustomSwipeAdapter extends PagerAdapter{
-   private int[] image_resources={R.drawable.asf,R.drawable.perry,R.drawable.marios};
+   private int[] image_resources={R.drawable.asfgym,R.drawable.perry,R.drawable.marios};
 
     private Context ctx;
     private LayoutInflater layoutInflater;
