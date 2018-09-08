@@ -80,6 +80,11 @@ public class ClassesFragment extends Fragment {
                 String formatDate = "dd/MM/yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(formatDate , Locale.US);
                 datePicked =  sdf.format(calendar.getTime());
+                for (ClassObject co : dummyList) {
+                    if (datePicked.equals(co.getClassDate())) {
+                        classesList.add(co);
+                    }
+                }
             }
         };
         //Show the calendar to pick a date
@@ -94,11 +99,7 @@ public class ClassesFragment extends Fragment {
 
             }
         });
-                    for (ClassObject co : dummyList) {
-                        if (datePicked.equals(co.getClassDate())) {
-                            classesList.add(co);
-                        }
-                    }
+
                 }
 
 
