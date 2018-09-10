@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class RegisterUserActivity extends AppCompatActivity {
     private TextView nameText, surnameText, emailText, phoneText;
-    private ImageView nameEdit, surnameEdit , emailEdit, phoneEdit;
+    private ImageView nameEdit, surnameEdit, emailEdit, phoneEdit;
     private Button registerBtn;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference users = database.getReference("Users");
@@ -136,7 +136,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //No regex for email
 
-                            emailText.setText(input.getText().toString());
+                        emailText.setText(input.getText().toString());
 
                     }
                 });
@@ -185,11 +185,11 @@ public class RegisterUserActivity extends AppCompatActivity {
         });
     }
 
-    public void addingToDatabase(){
+    public void addingToDatabase() {
         users.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot user : dataSnapshot.getChildren()){
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
                     idList.add(Integer.parseInt(user.getKey()));
                 }
             }
@@ -201,10 +201,9 @@ public class RegisterUserActivity extends AppCompatActivity {
         });
 
 
-
     }
 
-    public void buttonListener(){
+    public void buttonListener() {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,30 +216,28 @@ public class RegisterUserActivity extends AppCompatActivity {
                 DatabaseReference newUser = database.getReference().child("Users").child(String.valueOf(usersID)).push();
                 User user = new User(nameText.getText().toString(), surnameText.getText().toString(), emailText.getText().toString(), phoneText.getText().toString(), usersID);
                 newUser.setValue(user);
-
-                if (recursionForID(usersID)) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterUserActivity.this);
-                    builder.setTitle("Success");
-                    builder.setMessage("Successful registration. Your id is: " +usersID);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(RegisterUserActivity.this, AdminMenu.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                    builder.show();
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterUserActivity.this);
+                builder.setTitle("Success");
+                builder.setMessage("Successful registration. Your id is: " + usersID);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(RegisterUserActivity.this, AdminMenu.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                builder.show();
             }
+
         });
     }
 
-    public boolean recursionForID(int usersID){
+    public boolean recursionForID(int usersID) {
         addingToDatabase();
         boolean found = false;
-        for(int i : idList){
-            if(i == usersID){
+        for (int i : idList) {
+            if (i == usersID) {
                 found = true;
             }
         }
