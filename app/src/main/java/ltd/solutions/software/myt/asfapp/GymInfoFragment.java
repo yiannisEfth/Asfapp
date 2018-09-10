@@ -21,27 +21,28 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
-    ImageButton iButton,fbButton,twitterButton,wwwButton;
+    ImageButton iButton, fbButton, twitterButton, wwwButton;
     GoogleMap mGoogleMap;
     MapView mapView;
     View mView;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-       mView= inflater.inflate(R.layout.gyminfo_fragment, null);
-       return mView;
+        mView = inflater.inflate(R.layout.gyminfo_fragment, null);
+        return mView;
     }
 
     @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
-        iButton=(ImageButton)getView().findViewById(R.id.img_button2);
-        fbButton=(ImageButton)getView().findViewById(R.id.img_button1);
-        twitterButton=(ImageButton)getView().findViewById(R.id.img_button3);
-        wwwButton=(ImageButton)getView().findViewById(R.id.img_button4);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        iButton = (ImageButton) getView().findViewById(R.id.img_button2);
+        fbButton = (ImageButton) getView().findViewById(R.id.img_button1);
+        twitterButton = (ImageButton) getView().findViewById(R.id.img_button3);
+        wwwButton = (ImageButton) getView().findViewById(R.id.img_button4);
 
         iButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent instaIntent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/asf.performance.cy/"));
+                Intent instaIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/asf.performance.cy/"));
                 startActivity(instaIntent);
             }
         });
@@ -49,7 +50,7 @@ public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
         fbButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent fbIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.facebook.com/ASF.PERFORMANCE/"));
+                Intent fbIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/ASF.PERFORMANCE/"));
                 startActivity(fbIntent);
             }
         });
@@ -57,20 +58,20 @@ public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
         twitterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/asf_performance"));
+                Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/asf_performance"));
                 startActivity(twitterIntent);
             }
         });
         wwwButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent twitterIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://asf-performance.com/"));
+                Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://asf-performance.com/"));
                 startActivity(twitterIntent);
             }
         });
 
-        mapView=(MapView)mView.findViewById(R.id.map);
-        if (mapView != null){
+        mapView = (MapView) mView.findViewById(R.id.map);
+        if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
@@ -86,7 +87,7 @@ public class GymInfoFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.addMarker(new MarkerOptions().position((new LatLng(34.6866451, 33.0254199))).title("Asf & Performance"));
 
-        CameraPosition Asf= CameraPosition.builder().target(new LatLng(34.6866451, 33.0254199)).zoom(16).bearing(0).tilt(45).build();
+        CameraPosition Asf = CameraPosition.builder().target(new LatLng(34.6866451, 33.0254199)).zoom(16).bearing(0).tilt(45).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Asf));
 
     }

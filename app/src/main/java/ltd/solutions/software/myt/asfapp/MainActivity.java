@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -64,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.admin:
-             //   Toast.makeText(this, "Hi", Toast.LENGTH_LONG).show();
+                //   Toast.makeText(this, "Hi", Toast.LENGTH_LONG).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Password");
                 final EditText input = new EditText(this);
@@ -75,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(input.getText().toString().equals("admin")){
-                            Intent intent = new Intent(getApplicationContext() , AdminMenu.class);
+                        if (input.getText().toString().equals("admin")) {
+                            Intent intent = new Intent(getApplicationContext(), AdminMenu.class);
                             startActivity(intent);
                         }
                     }

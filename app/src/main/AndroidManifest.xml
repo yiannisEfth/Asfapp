@@ -43,6 +43,7 @@
         <activity android:name=".ClientView_Activity" />
         <activity android:name=".AddClassActivity" />
         <activity android:name=".RegisterUserActivity"></activity>
+        <activity android:name=".UserClasses" />
     </application>
 
 </manifest>

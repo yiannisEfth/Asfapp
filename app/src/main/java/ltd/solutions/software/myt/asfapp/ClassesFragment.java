@@ -7,15 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,13 +69,14 @@ public class ClassesFragment extends Fragment {
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 String formatDate = "dd/MM/yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(formatDate , Locale.US);
-                datePicked =  sdf.format(calendar.getTime());
+                SimpleDateFormat sdf = new SimpleDateFormat(formatDate, Locale.US);
+                datePicked = sdf.format(calendar.getTime());
                 for (ClassObject co : dummyList) {
                     if (datePicked.equals(co.getClassDate())) {
                         classesList.add(co);
                     }
                 }
+                classesAdapter.notifyDataSetChanged();
             }
         };
         //Show the calendar to pick a date
@@ -100,7 +92,7 @@ public class ClassesFragment extends Fragment {
             }
         });
 
-                }
+    }
 
 
     public void setUpFirebase() {

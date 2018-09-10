@@ -1,7 +1,7 @@
 package ltd.solutions.software.myt.asfapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class ClientView_Activity extends AppCompatActivity {
 

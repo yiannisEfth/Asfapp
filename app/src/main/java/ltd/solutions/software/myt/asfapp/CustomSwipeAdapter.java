@@ -12,15 +12,15 @@ import android.widget.LinearLayout;
  * Created by marne on 26/08/2018.
  */
 
-public class CustomSwipeAdapter extends PagerAdapter{
-   private int[] image_resources={R.drawable.asfgym,R.drawable.perry,R.drawable.marios};
+public class CustomSwipeAdapter extends PagerAdapter {
+    private int[] image_resources = {R.drawable.asfgym, R.drawable.perry, R.drawable.marios};
 
     private Context ctx;
     private LayoutInflater layoutInflater;
 
-    public CustomSwipeAdapter(Context ctx){
+    public CustomSwipeAdapter(Context ctx) {
 
-        this.ctx=ctx;
+        this.ctx = ctx;
     }
 
     @Override
@@ -30,13 +30,13 @@ public class CustomSwipeAdapter extends PagerAdapter{
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return (view==(LinearLayout)object);
+        return (view == (LinearLayout) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View item_view= layoutInflater.inflate(R.layout.swipe_layout,container,false);
+        View item_view = layoutInflater.inflate(R.layout.swipe_layout, container, false);
         ImageView imageView = (ImageView) item_view.findViewById(R.id.image_view);
         imageView.setImageResource(Integer.valueOf(image_resources[position]));
         container.addView(item_view);
@@ -47,7 +47,7 @@ public class CustomSwipeAdapter extends PagerAdapter{
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
-        container.removeView((LinearLayout)object);
+        container.removeView((LinearLayout) object);
 
     }
 }

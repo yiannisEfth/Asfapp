@@ -21,4 +21,7 @@
     <string name="profile_id">ID</string>
     <string name="title_activity_admin_menu">AdminMenu</string>
     <string name="title_activity_class">ClassActivity</string>
+    <string name="profile_user_reset">Reset All</string>
+    <string name="profile_user_view_classes">View Your Classes</string>
+    <string name="user_classes">Your Classes</string>
 </resources>

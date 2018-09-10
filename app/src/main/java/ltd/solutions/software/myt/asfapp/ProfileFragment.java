@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,12 +18,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
@@ -36,9 +42,12 @@ public class ProfileFragment extends Fragment {
     private ImageView dateStartedEdit;
     private ImageView idEdit;
     private TextView nameText, surnameText, heightText, weightText, dateStartedText, idText;
-    private Button clearAllBtn;
+    private Button clearAllBtn, viewUserClassesBtn;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference usersReference = database.getReference("Users");
+    private List<String> currentUsers = new ArrayList<>();
 
 
     @Nullable
@@ -60,7 +69,6 @@ public class ProfileFragment extends Fragment {
         weightSetup();
         dateStartedSetup();
         idSetup();
-        buttonSetup();
     }
 
     @Override
@@ -80,8 +88,9 @@ public class ProfileFragment extends Fragment {
         weightText = view.findViewById(R.id.profile_weight_input);
         dateStartedText = view.findViewById(R.id.profile_started_input);
         idText = view.findViewById(R.id.profile_id_input);
-        //Button
+        //Buttons
         clearAllBtn = view.findViewById(R.id.profile_button_clear);
+        viewUserClassesBtn = view.findViewById(R.id.profile_button_classes);
 
     }
 
@@ -98,6 +107,20 @@ public class ProfileFragment extends Fragment {
         weightText.setText(weight);
         dateStartedText.setText(dateStarted);
         idText.setText(id);
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot users : dataSnapshot.getChildren()) {
+                    currentUsers.add(users.getKey());
+                }
+                buttonSetup();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void nameSetup() {
@@ -329,5 +352,18 @@ public class ProfileFragment extends Fragment {
                 editor.commit();
             }
         });
+
+        viewUserClassesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentUsers.contains(sharedPref.getString("id", null))) {
+                    Intent intent = new Intent(getContext(), UserClasses.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "User Does Not Exist. Please Review Your ID", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
+
 }
