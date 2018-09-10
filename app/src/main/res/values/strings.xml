@@ -7,9 +7,7 @@
     <string name="welcome">JOIN OUR FAMILY</string>
     <string name="admin">Admin</string>
     <string name="date">Pick a date</string>
-    <string name="address">3,Lefkonoikou street,3071,Limassol-Cyprus</string>
-    <string name="email">as.fitness.cy@gmail.com</string>
-    <string name="telephone">99851085</string>
+
 
     <!-- Profile Fragment -->
     <string name="profile_top_text">Profile</string>
@@ -24,4 +22,11 @@
     <string name="profile_user_reset">Reset All</string>
     <string name="profile_user_view_classes">View Your Classes</string>
     <string name="user_classes">Your Classes</string>
+
+    <!-- Gym Info -->
+    <string name="address">3, Lefkonoikou street, 3071, Limassol-Cyprus </string>
+    <string name="email">as.fitness.cy@gmail.com</string>
+    <string name="telephone">99851085</string>
+    <string name="emailMYT">mytsolutionscy@gmail.com</string>
+
 </resources>
