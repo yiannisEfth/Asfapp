@@ -23,10 +23,20 @@
     <string name="profile_user_view_classes">View Your Classes</string>
     <string name="user_classes">Your Classes</string>
 
+    <string name="register">Register</string>
+    <string name="register_email">Email</string>
+    <string name="register_telephone">Phone Number</string>
+    <string name="register_register">Register</string>
+
+
+
+=======
+
     <!-- Gym Info -->
     <string name="address">3, Lefkonoikou street, 3071, Limassol-Cyprus </string>
     <string name="email">as.fitness.cy@gmail.com</string>
     <string name="telephone">99851085</string>
     <string name="emailMYT">mytsolutionscy@gmail.com</string>
+>>>>>>> 341a3383f599be28888aae60b70507da763699b5
 
 </resources>
