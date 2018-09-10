@@ -71,6 +71,7 @@ public class ClassesFragment extends Fragment {
                 String formatDate = "dd/MM/yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(formatDate, Locale.US);
                 datePicked = sdf.format(calendar.getTime());
+                classesList.clear();
                 for (ClassObject co : dummyList) {
                     if (datePicked.equals(co.getClassDate())) {
                         classesList.add(co);

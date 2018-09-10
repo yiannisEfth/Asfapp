@@ -36,6 +36,7 @@ public class UserClasses extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_classes_activity);
+        Log.i("ACTIVITY", "CREATED");
         classesAdapter = new ClassesAdapter(userClassesList);
         userClassesView = (RecyclerView) findViewById(R.id.class_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -44,14 +45,10 @@ public class UserClasses extends AppCompatActivity {
         userClassesView.setAdapter(classesAdapter);
         sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE);
         currentUser = sharedPref.getString("id", null);
-
+        fetchFromFirebase();
     }
 
     public void fetchFromFirebase() {
-        allClassesList.clear();
-        userClassesList.clear();
-        classesFetchedList.clear();
-        classesAdapter.notifyDataSetChanged();
         classesReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,6 +75,8 @@ public class UserClasses extends AppCompatActivity {
                     classesFetchedList.add(child.getKey());
                 }
                 Log.i("USER FETCHED CLASSES", String.valueOf(classesFetchedList.size()));
+
+                setUpList();
             }
 
             @Override
@@ -85,6 +84,7 @@ public class UserClasses extends AppCompatActivity {
 
             }
         });
+
     }
 
     public void setUpList() {
@@ -93,25 +93,6 @@ public class UserClasses extends AppCompatActivity {
                 userClassesList.add(classO);
             }
         }
-        classesAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        allClassesList.clear();
-        userClassesList.clear();
-        classesFetchedList.clear();
-        classesAdapter.notifyDataSetChanged();
-        fetchFromFirebase();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        allClassesList.clear();
-        userClassesList.clear();
-        classesFetchedList.clear();
         classesAdapter.notifyDataSetChanged();
     }
 }
