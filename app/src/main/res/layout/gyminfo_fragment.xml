@@ -114,7 +114,8 @@
                     android:layout_marginStart="5dp"
                     android:textStyle="italic"
                     android:textSize="16dp"
-                    android:text="@string/telephone"/>
+                    android:text="@string/telephone"
+                    android:autoLink="phone"/>
 
             </LinearLayout>
 
@@ -134,6 +135,7 @@
                     android:layout_marginStart="5dp"
                     android:textStyle="italic"
                     android:textSize="16dp"
+                    android:autoLink="email"
                     android:text="@string/email"/>
             </LinearLayout>
             <LinearLayout
