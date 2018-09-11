@@ -207,30 +207,34 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addingToDatabase();
-                Random rdm = new Random();
-                int usersID = rdm.nextInt(999999);
-                while (recursionForID(usersID) == true) {
-                    usersID = rdm.nextInt(999999);
-                }
-                DatabaseReference newUser = database.getReference().child("Users").child(String.valueOf(usersID)).push();
-                User user = new User(nameText.getText().toString(), surnameText.getText().toString(), emailText.getText().toString(), phoneText.getText().toString(), usersID);
-                newUser.setValue(user);
-                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterUserActivity.this);
-                builder.setTitle("Success");
-                builder.setMessage("Successful registration. Your id is: " + usersID);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(RegisterUserActivity.this, AdminMenu.class);
-                        startActivity(intent);
-                        finish();
+                if (nameText == null || surnameText == null || nameText.getText().toString().equals("") || surnameText.getText().toString().equals("")) {
+                    Toast.makeText(RegisterUserActivity.this, "Name or Surname cannot be empty", Toast.LENGTH_LONG).show();
+                } else {
+                    addingToDatabase();
+                    Random rdm = new Random();
+                    int usersID = rdm.nextInt(999999);
+                    while (recursionForID(usersID)) {
+                        usersID = rdm.nextInt(999999);
                     }
-                });
-                builder.show();
+                    DatabaseReference newUser = FirebaseDatabase.getInstance().getReference();
+                    User user = new User(nameText.getText().toString(), surnameText.getText().toString(), emailText.getText().toString(), phoneText.getText().toString(), usersID, true);
+                    newUser.child("Users").child(String.valueOf(usersID)).setValue(user);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterUserActivity.this);
+                    builder.setTitle("Success");
+                    builder.setMessage("Successful registration. " + nameText.getText().toString() + " " + surnameText.getText().toString() + " is registered with id: " + usersID);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(RegisterUserActivity.this, AdminMenu.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.show();
+                }
             }
-
         });
+
     }
 
     public boolean recursionForID(int usersID) {
