@@ -36,14 +36,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     public void onBindViewHolder(UserAdapter.MyViewHolder holder, int position) {
 
         User user = userList.get(position);
-        holder.userName.setText(User.getName);
-        holder.userSurname.setText(User.getSurname);
-        holder.isActive.setText(Boolean.toString(User.isActive));
+        holder.userName.setText(user.getName());
+        holder.userSurname.setText(user.getSurname());
+        holder.isActive.setText(Boolean.toString(user.isActive));
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return userList.size();
     }
 }
