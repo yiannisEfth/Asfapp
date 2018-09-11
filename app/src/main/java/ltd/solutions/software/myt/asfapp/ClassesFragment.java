@@ -115,4 +115,13 @@ public class ClassesFragment extends Fragment {
         });
 
     }
+
+    public void setupClassBooking(){
+        classListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
 }
