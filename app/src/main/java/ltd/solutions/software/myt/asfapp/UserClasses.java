@@ -28,7 +28,7 @@ public class UserClasses extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference classesReference = database.getReference("Classes");
     private DatabaseReference usersReference = database.getReference("Users");
-    private ClassesAdapter classesAdapter;
+    private UserClassesAdapter classesAdapter;
     private SharedPreferences sharedPref;
     private String currentUser;
 
@@ -37,7 +37,7 @@ public class UserClasses extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_classes_activity);
         Log.i("ACTIVITY", "CREATED");
-        classesAdapter = new ClassesAdapter(userClassesList);
+        classesAdapter = new UserClassesAdapter(userClassesList);
         userClassesView = (RecyclerView) findViewById(R.id.class_recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         userClassesView.setLayoutManager(mLayoutManager);

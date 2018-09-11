@@ -1,17 +1,25 @@
 package ltd.solutions.software.myt.asfapp;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class ClassesFragment extends Fragment {
 
@@ -33,9 +42,12 @@ public class ClassesFragment extends Fragment {
     private ClassesAdapter classesAdapter;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference classesReference = database.getReference("Classes");
+    private DatabaseReference usersReference = database.getReference("Users");
     private Calendar calendar;
     private DatePickerDialog.OnDateSetListener date;
     private String datePicked;
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -46,8 +58,15 @@ public class ClassesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        sharedPref = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
         classListView = (RecyclerView) getView().findViewById(R.id.classView);
-        classesAdapter = new ClassesAdapter(classesList);
+        classesAdapter = new ClassesAdapter(classesList, new OnClassAdapterClickListener() {
+            @Override
+            public void onItemClicked(ClassObject classObject) {
+                setupClassBooking(classObject);
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext().getApplicationContext());
         classListView.setLayoutManager(mLayoutManager);
         classListView.setItemAnimator(new DefaultItemAnimator());
@@ -92,7 +111,6 @@ public class ClassesFragment extends Fragment {
 
             }
         });
-
     }
 
 
@@ -116,12 +134,96 @@ public class ClassesFragment extends Fragment {
 
     }
 
-    public void setupClassBooking(){
-        classListView.setOnClickListener(new View.OnClickListener() {
+    public void setupClassBooking(ClassObject fetchedClass) {
+        final ClassObject desiredClass = fetchedClass;
+        boolean alreadyAttending = false;
+        final List<Integer> currentUsers = checkIfUserExists();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Please Enter Your ID To Book A Class");
+
+        final EditText input = new EditText(getContext());
+        if (sharedPref.getString("id", null) != null) {
+            input.setText(sharedPref.getString("id", null));
+            alreadyAttending = checkAttendance(fetchedClass.getID());
+        }
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        final boolean finalAlreadyAttending = alreadyAttending;
+        builder.setPositiveButton("Book", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(DialogInterface dialog, int which) {
+                editor.putString("id", input.getText().toString());
+                editor.commit();
+                if (!Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString())) {
+                    Toast.makeText(getContext(), "Invalid input. ID is a 6-digit number", Toast.LENGTH_LONG).show();
+                } else if (desiredClass.getAvailablePlaces() == 0) {
+                    Toast.makeText(getContext(), "This Class Is Fully Booked", Toast.LENGTH_LONG).show();
+                } else if (finalAlreadyAttending) {
+                    Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+
+                } else if (checkAttendance(desiredClass.getID())) {
+                    Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+                } else if (!currentUsers.contains(Integer.parseInt(input.getText().toString()))) {
+                    Toast.makeText(getContext(), "User Does Not Exist", Toast.LENGTH_LONG).show();
+                } else {
+                    usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(desiredClass.getID())).setValue(desiredClass.getClassName());
+                    classesReference.child(String.valueOf(desiredClass.getID())).child("availablePlaces").setValue(desiredClass.getAvailablePlaces() - 1);
+                    classesReference.child(String.valueOf(desiredClass.getID())).child("reservedPlaces").setValue(desiredClass.getReservedPlaces() + 1);
+                    Toast.makeText(getContext(), "Booking Successful!", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public boolean checkAttendance(final int id) {
+        final boolean[] isAttended = {false};
+        Log.i("ID ENTERED", String.valueOf(id));
+        final List<Integer> attending = new ArrayList<>();
+        usersReference.child(sharedPref.getString("id", null)).child("Attending").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    attending.add(Integer.parseInt(child.getKey()));
+                    Log.i("ATTENDING", String.valueOf(child.getKey()) + "SIZE: " + String.valueOf(attending.size()));
+                    if (id == Integer.parseInt(child.getKey())) {
+                        isAttended[0] = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+        return isAttended[0];
+    }
+
+    public List<Integer> checkIfUserExists() {
+        final List<Integer> userList = new ArrayList<>();
+        usersReference.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    userList.add(Integer.parseInt(child.getKey()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return userList;
     }
 }

@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.MyViewHolder> {
-
+public class UserClassesAdapter extends RecyclerView.Adapter<UserClassesAdapter.MyViewHolder> {
     private List<ClassObject> classList;
-    public OnClassAdapterClickListener onCAL;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView className, classDate, classSpots;
@@ -24,9 +22,8 @@ public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.MyViewHo
         }
     }
 
-    public ClassesAdapter(List<ClassObject> classList, OnClassAdapterClickListener onCAL) {
+    public UserClassesAdapter(List<ClassObject> classList) {
         this.classList = classList;
-        this.onCAL = onCAL;
     }
 
     @Override
@@ -37,18 +34,12 @@ public class ClassesAdapter extends RecyclerView.Adapter<ClassesAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(UserClassesAdapter.MyViewHolder holder, final int position) {
         ClassObject classObject = classList.get(position);
         holder.className.setText(classObject.getClassName());
         holder.classDate.setText(classObject.getClassDate());
         holder.classSpots.setText(Integer.toString(classObject.getAvailablePlaces()));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCAL.onItemClicked(classList.get(position));
-            }
-        });
     }
 
 
