@@ -48,6 +48,7 @@ public class ClassesFragment extends Fragment {
     private String datePicked;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
+    private boolean isAttended = false;
 
     @Nullable
     @Override
@@ -137,6 +138,7 @@ public class ClassesFragment extends Fragment {
     public void setupClassBooking(ClassObject fetchedClass) {
         final ClassObject desiredClass = fetchedClass;
         boolean alreadyAttending = false;
+        isAttended = false;
         final List<Integer> currentUsers = checkIfUserExists();
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Please Enter Your ID To Book A Class");
@@ -169,6 +171,7 @@ public class ClassesFragment extends Fragment {
                     usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(desiredClass.getID())).setValue(desiredClass.getClassName());
                     classesReference.child(String.valueOf(desiredClass.getID())).child("availablePlaces").setValue(desiredClass.getAvailablePlaces() - 1);
                     classesReference.child(String.valueOf(desiredClass.getID())).child("reservedPlaces").setValue(desiredClass.getReservedPlaces() + 1);
+                    desiredClass.setAvailablePlaces(desiredClass.getAvailablePlaces() - 1);
                     Toast.makeText(getContext(), "Booking Successful!", Toast.LENGTH_LONG).show();
 
                 }
@@ -185,7 +188,6 @@ public class ClassesFragment extends Fragment {
     }
 
     public boolean checkAttendance(final int id) {
-        final boolean[] isAttended = {false};
         Log.i("ID ENTERED", String.valueOf(id));
         final List<Integer> attending = new ArrayList<>();
         usersReference.child(sharedPref.getString("id", null)).child("Attending").addValueEventListener(new ValueEventListener() {
@@ -195,7 +197,7 @@ public class ClassesFragment extends Fragment {
                     attending.add(Integer.parseInt(child.getKey()));
                     Log.i("ATTENDING", String.valueOf(child.getKey()) + "SIZE: " + String.valueOf(attending.size()));
                     if (id == Integer.parseInt(child.getKey())) {
-                        isAttended[0] = true;
+                        isAttended = true;
                     }
                 }
             }
@@ -205,7 +207,7 @@ public class ClassesFragment extends Fragment {
 
             }
         });
-        return isAttended[0];
+        return isAttended;
     }
 
     public List<Integer> checkIfUserExists() {
