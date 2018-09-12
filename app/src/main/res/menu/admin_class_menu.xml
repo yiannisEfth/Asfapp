@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/admin_class_menu_edit_name"
+        android:orderInCategory="100"
+        android:title="Edit Name" />
+    <item
+        android:id="@+id/admin_class_menu_edit_date"
+        android:orderInCategory="100"
+        android:title="Edit Date" />
+    <item
+        android:id="@+id/admin_class_menu_edit_time"
+        android:orderInCategory="100"
+        android:title="Edit Time" />
+
+    <item
+        android:id="@+id/admin_class_menu_edit_space"
+        android:orderInCategory="100"
+        android:title="Edit Free Spaces" />
+
+    <item
+        android:id="@+id/admin_class_menu_delete"
+        android:orderInCategory="100"
+        android:title="Delete Class" />
+</menu>

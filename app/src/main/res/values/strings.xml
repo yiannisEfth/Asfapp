@@ -37,6 +37,8 @@
     <string name="email">as.fitness.cy@gmail.com</string>
     <string name="telephone">+357 99851085</string>
     <string name="emailMYT">mytsolutionscy@gmail.com</string>
->>>>>>> 341a3383f599be28888aae60b70507da763699b5
+    <string name="class_view_time">Time:</string>
+    <string name="class_view_spaces">Spaces Left:</string>
+    >>>>>>> 341a3383f599be28888aae60b70507da763699b5
 
 </resources>

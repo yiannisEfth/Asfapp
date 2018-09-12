@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class UserClasses extends AppCompatActivity {
@@ -88,11 +89,13 @@ public class UserClasses extends AppCompatActivity {
     }
 
     public void setUpList() {
+        ClassComparator comparator = new ClassComparator();
         for (ClassObject classO : allClassesList) {
             if (classesFetchedList.contains(Integer.toString(classO.getID()))) {
                 userClassesList.add(classO);
             }
         }
+        Collections.sort(userClassesList, comparator);
         classesAdapter.notifyDataSetChanged();
     }
 }

@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/class_date"
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/class_name" />
 
@@ -28,5 +28,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/class_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/class_name"
+        android:layout_toEndOf="@+id/class_time_text" />
+
+    <TextView
+        android:id="@+id/class_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/class_space_text"
+        android:layout_below="@+id/class_name"
+        android:text="@string/class_view_time" />
+
+    <TextView
+        android:id="@+id/class_space_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/class_spots"
+        android:text="@string/class_view_spaces" />
+
+    <View
+        android:id="@+id/border_view"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#fff28c"
+        android:layout_marginTop="42dp" />
 
 </RelativeLayout>

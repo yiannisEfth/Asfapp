@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -80,6 +81,7 @@ public class ClassesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button dateBtn = (Button) getView().findViewById(R.id.datespinner);
+        final ClassComparator comparator = new ClassComparator();
         calendar = Calendar.getInstance();
         //making the datepicked variable the same as the date picked from the calendar
         date = new DatePickerDialog.OnDateSetListener() {
@@ -97,6 +99,7 @@ public class ClassesFragment extends Fragment {
                         classesList.add(co);
                     }
                 }
+                Collections.sort(classesList, comparator);
                 classesAdapter.notifyDataSetChanged();
             }
         };
