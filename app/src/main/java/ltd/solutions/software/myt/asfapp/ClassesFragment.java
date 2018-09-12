@@ -172,6 +172,7 @@ public class ClassesFragment extends Fragment {
                     classesReference.child(String.valueOf(desiredClass.getID())).child("availablePlaces").setValue(desiredClass.getAvailablePlaces() - 1);
                     classesReference.child(String.valueOf(desiredClass.getID())).child("reservedPlaces").setValue(desiredClass.getReservedPlaces() + 1);
                     desiredClass.setAvailablePlaces(desiredClass.getAvailablePlaces() - 1);
+                    classesAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Booking Successful!", Toast.LENGTH_LONG).show();
 
                 }
