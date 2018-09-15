@@ -39,6 +39,22 @@
     <string name="emailMYT">mytsolutionscy@gmail.com</string>
     <string name="class_view_time">Time:</string>
     <string name="class_view_spaces">Spaces Left:</string>
+    <string name="class_capacity">Class capacity</string>
+    <string name="monday">Monday</string>
+    <string name="sunday">Sunday</string>
+    <string name="saturday">Saturday</string>
+    <string name="friday">Friday</string>
+    <string name="wendesday">Wendesday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="oneMonth">For one month</string>
+    <string name="threeMonths">For 3 months</string>
+    <string name="time">Time</string>
+    <string name="semicolon">:</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="register_class">Register Class</string>
+    <string name="add">ADD</string>
     >>>>>>> 341a3383f599be28888aae60b70507da763699b5
 
 </resources>
