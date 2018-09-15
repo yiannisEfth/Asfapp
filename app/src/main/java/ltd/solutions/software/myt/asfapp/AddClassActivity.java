@@ -150,36 +150,102 @@ public class AddClassActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                //Checking for 1 month
                 if (chkMonday.isChecked() && chk1Month.isChecked()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                    Calendar calendar = Calendar.getInstance();
-                    while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                        calendar.add(Calendar.DATE, 1);
-                    }
-                    Random rdm = new Random();
-                    for (int i = 0; i < 4; i++) {
-                        int classID = rdm.nextInt(999999);
-                        String date = dateFormat.format(calendar.getTime());
-                        DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
-                        Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString() , minutesText.getText().toString());
-                        newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
-                        calendar.add(Calendar.DATE, 7);
-                    }
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
-                    builder.setTitle("Success");
-                    builder.setMessage("Successful addition of " + nameText.getText().toString());
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(AddClassActivity.this, AdminMenu.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                    builder.show();
+                    dayCheckedOneMonth(2);
                 }
+                if (chkTuesday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(3);
+                }
+                if (chkWendseday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(4);
+                }
+                if (chkThursday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(5);
+                }
+                if (chkFriday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(6);
+                }
+                if (chkSaturday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(7);
+                }
+                if (chkSunday.isChecked() && chk1Month.isChecked()) {
+                    dayCheckedOneMonth(1);
+                }
+                //Checking for 3 months
+                if (chkSunday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(1);
+                }
+                if (chkMonday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(2);
+                }
+                if (chkTuesday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(3);
+                }
+                if (chkWendseday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(4);
+                }
+                if (chkThursday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(5);
+                }
+                if (chkFriday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(6);
+                }
+                if (chkSaturday.isChecked() && chk3Months.isChecked()) {
+                    dayCheckedThreeMonth(7);
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
+                builder.setTitle("Success");
+                builder.setMessage("Successful addition of " + nameText.getText().toString());
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(AddClassActivity.this, AdminMenu.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                builder.show();
             }
         });
+    }
+
+    private void dayCheckedOneMonth(int day) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        Calendar calendar = Calendar.getInstance();
+        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
+            calendar.add(Calendar.DATE, 1);
+        }
+        Random rdm = new Random();
+        for (int i = 0; i < 4; i++) {
+            int classID = rdm.nextInt(999999);
+            String date = dateFormat.format(calendar.getTime());
+            DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
+            Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
+            newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
+            calendar.add(Calendar.DATE, 7);
+        }
+
+
+    }
+
+    private void dayCheckedThreeMonth(int day) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        Calendar calendar = Calendar.getInstance();
+        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
+            calendar.add(Calendar.DATE, 1);
+        }
+        Random rdm = new Random();
+        for (int i = 0; i < 12; i++) {
+            int classID = rdm.nextInt(999999);
+            String date = dateFormat.format(calendar.getTime());
+            DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
+            Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
+            newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
+            calendar.add(Calendar.DATE, 7);
+        }
+
+
     }
 }
