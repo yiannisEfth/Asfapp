@@ -1,14 +1,15 @@
 package ltd.solutions.software.myt.asfapp;
 
 public class Class {
-    public String name , availablePlaces , date , time, booked;
+    public String className, availablePlaces, classDate, time, reservedPlaces;
+    public int id;
 
-
-    public Class(String name , String capacity , String date , String time) {
-        this.name = name;
+    public Class(String name, String capacity, String date, String hours , String minutes) {
+        this.className = name;
         this.availablePlaces = capacity;
-        this.date = date;
-        this.time = time;
-        this.booked = "0";
+        this.classDate = date;
+        this.time = hours + ":" +minutes;
+        this.reservedPlaces = "0";
+        this.id = 123;
     }
 }

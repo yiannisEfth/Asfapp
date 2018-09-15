@@ -144,7 +144,6 @@ public class AddClassActivity extends AppCompatActivity {
     }
 
     private void btnListener() {
-        time = hoursText.getText().toString() + ":" + minutesText.getText().toString();
         btnAdd.setOnClickListener(new View.OnClickListener() {
 
 
@@ -160,8 +159,8 @@ public class AddClassActivity extends AppCompatActivity {
                     for (int i = 0; i < 4; i++) {
                         String date = dateFormat.format(calendar.getTime());
                         DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
-                        Class classes = new Class(nameText.getText().toString(), capacityText.getText().toString(), date, time);
-                        newClass.child("Classes").child(nameText.getText().toString()).setValue(classes);
+                        Class classes = new Class(nameText.getText().toString(), capacityText.getText().toString(), date, hoursText.getText().toString() , minutesText.getText().toString());
+                        newClass.child("Classes").child("123").setValue(classes);
                         calendar.add(Calendar.DATE, 7);
                     }
 
