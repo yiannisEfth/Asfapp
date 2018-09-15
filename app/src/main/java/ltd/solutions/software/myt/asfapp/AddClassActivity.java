@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -152,15 +153,16 @@ public class AddClassActivity extends AppCompatActivity {
                 if (chkMonday.isChecked() && chk1Month.isChecked()) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                     Calendar calendar = Calendar.getInstance();
-                    String today = dateFormat.format(calendar.getTime());
                     while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
                         calendar.add(Calendar.DATE, 1);
                     }
+                    Random rdm = new Random();
                     for (int i = 0; i < 4; i++) {
+                        int classID = rdm.nextInt(999999);
                         String date = dateFormat.format(calendar.getTime());
                         DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
-                        Class classes = new Class(nameText.getText().toString(), capacityText.getText().toString(), date, hoursText.getText().toString() , minutesText.getText().toString());
-                        newClass.child("Classes").child("123").setValue(classes);
+                        Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString() , minutesText.getText().toString());
+                        newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
                         calendar.add(Calendar.DATE, 7);
                     }
 
