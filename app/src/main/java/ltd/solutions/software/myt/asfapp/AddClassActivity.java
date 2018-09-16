@@ -14,16 +14,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public class AddClassActivity extends AppCompatActivity {
@@ -33,12 +35,16 @@ public class AddClassActivity extends AppCompatActivity {
     private ImageView nameEdit, capacityEdit;
     private Button btnAdd;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference classesReference = database.getReference("Classes");
     private String time;
+    private List<ClassObject> currentClasses = new ArrayList<>();
+    private boolean classAlreadyExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_class);
+        fetchClassIds();
         chkMonday = findViewById(R.id.chkMonday);
         chkTuesday = findViewById(R.id.chkTuesday);
         chkWendseday = findViewById(R.id.chkWendesday);
@@ -151,51 +157,54 @@ public class AddClassActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Checking for 1 month
-                if (chkMonday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(2);
+                if (nameText.getText().toString().isEmpty() || capacityText.getText().toString().isEmpty()) {
+                    Toast.makeText(AddClassActivity.this, "Class Creation Failed. Please Fill Out All Necessary Fields", Toast.LENGTH_LONG).show();
+                } else {
+                    if (chkMonday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(2);
+                    }
+                    if (chkTuesday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(3);
+                    }
+                    if (chkWendseday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(4);
+                    }
+                    if (chkThursday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(5);
+                    }
+                    if (chkFriday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(6);
+                    }
+                    if (chkSaturday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(7);
+                    }
+                    if (chkSunday.isChecked() && chk1Month.isChecked()) {
+                        dayCheckedOneMonth(1);
+                    }
+                    //Checking for 3 months
+                    if (chkSunday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(1);
+                    }
+                    if (chkMonday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(2);
+                    }
+                    if (chkTuesday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(3);
+                    }
+                    if (chkWendseday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(4);
+                    }
+                    if (chkThursday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(5);
+                    }
+                    if (chkFriday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(6);
+                    }
+                    if (chkSaturday.isChecked() && chk3Months.isChecked()) {
+                        dayCheckedThreeMonth(7);
+                    }
                 }
-                if (chkTuesday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(3);
-                }
-                if (chkWendseday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(4);
-                }
-                if (chkThursday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(5);
-                }
-                if (chkFriday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(6);
-                }
-                if (chkSaturday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(7);
-                }
-                if (chkSunday.isChecked() && chk1Month.isChecked()) {
-                    dayCheckedOneMonth(1);
-                }
-                //Checking for 3 months
-                if (chkSunday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(1);
-                }
-                if (chkMonday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(2);
-                }
-                if (chkTuesday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(3);
-                }
-                if (chkWendseday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(4);
-                }
-                if (chkThursday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(5);
-                }
-                if (chkFriday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(6);
-                }
-                if (chkSaturday.isChecked() && chk3Months.isChecked()) {
-                    dayCheckedThreeMonth(7);
-                }
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
                 builder.setTitle("Success");
                 builder.setMessage("Successful addition of " + nameText.getText().toString());
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -220,10 +229,14 @@ public class AddClassActivity extends AppCompatActivity {
         Random rdm = new Random();
         for (int i = 0; i < 4; i++) {
             int classID = rdm.nextInt(999999);
+            if (checkClassExistance(classID)) {
+                classID = rdm.nextInt(999999);
+            }
             String date = dateFormat.format(calendar.getTime());
             DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
             Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
             newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
+            newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(classID);
             calendar.add(Calendar.DATE, 7);
         }
 
@@ -239,13 +252,46 @@ public class AddClassActivity extends AppCompatActivity {
         Random rdm = new Random();
         for (int i = 0; i < 12; i++) {
             int classID = rdm.nextInt(999999);
+            if (checkClassExistance(classID)) {
+                classID = rdm.nextInt(999999);
+            }
             String date = dateFormat.format(calendar.getTime());
             DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
             Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
             newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
+            newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(String.valueOf(classID));
             calendar.add(Calendar.DATE, 7);
         }
 
 
+    }
+
+    public void fetchClassIds() {
+        classesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentClasses.clear();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    ClassObject dbClass = child.getValue(ClassObject.class);
+                    currentClasses.add(dbClass);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public boolean checkClassExistance(int id) {
+        classAlreadyExists = false;
+        for (ClassObject c : currentClasses) {
+            if (c.getID() == id) {
+                classAlreadyExists = true;
+            }
+        }
+        return classAlreadyExists;
     }
 }

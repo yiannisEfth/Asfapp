@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,6 @@ import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment {
 
-    private ImageView nameEdit;
-    private ImageView surnameEdit;
     private ImageView heightEdit;
     private ImageView weightEdit;
     private ImageView dateStartedEdit;
@@ -48,6 +47,8 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference usersReference = database.getReference("Users");
     private List<String> currentUsers = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private String name, surname;
 
 
     @Nullable
@@ -63,8 +64,6 @@ public class ProfileFragment extends Fragment {
         sharedPref = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         initialSetup();
-        nameSetup();
-        surnameSetup();
         heightSetup();
         weightSetup();
         dateStartedSetup();
@@ -75,8 +74,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Edit Images
-        nameEdit = view.findViewById(R.id.profile_name_edit);
-        surnameEdit = view.findViewById(R.id.profile_surname_edit);
         heightEdit = view.findViewById(R.id.profile_height_edit);
         weightEdit = view.findViewById(R.id.profile_weight_edit);
         dateStartedEdit = view.findViewById(R.id.profile_started_edit);
@@ -110,8 +107,14 @@ public class ProfileFragment extends Fragment {
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot users : dataSnapshot.getChildren()) {
-                    currentUsers.add(users.getKey());
+                users.clear();
+                currentUsers.clear();
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    User user = child.getValue(User.class);
+                    currentUsers.add(String.valueOf(user.getId()));
+                    Log.i("currentUSER", user.getName());
+                    users.add(user);
                 }
                 buttonSetup();
             }
@@ -123,73 +126,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void nameSetup() {
-        nameEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Please Enter Your Name");
-
-                final EditText input = new EditText(getContext());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Pattern.matches("[A-z]{0,20}", input.getText().toString())) {
-                            nameText.setText(input.getText().toString());
-                            editor.putString("name", input.getText().toString());
-                            editor.commit();
-                        } else {
-                            Toast.makeText(getContext(), "Invalid input. Name can only contain letters and no spaces.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
-    }
-
-    public void surnameSetup() {
-        surnameEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Please Enter Your Name");
-
-                final EditText input = new EditText(getContext());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (Pattern.matches("[A-z]{0,20}", input.getText().toString())) {
-                            surnameText.setText(input.getText().toString());
-                            editor.putString("surname", input.getText().toString());
-                            editor.commit();
-                        } else {
-                            Toast.makeText(getContext(), "Invalid input. Surname can only contain letters and no spaces.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
-    }
 
     public void heightSetup() {
         heightEdit.setOnClickListener(new View.OnClickListener() {
@@ -312,12 +248,24 @@ public class ProfileFragment extends Fragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString())) {
-                            idText.setText(input.getText().toString());
-                            editor.putString("id", input.getText().toString());
-                            editor.commit();
-                        } else {
+                        if (!Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString()) || input.getText().toString().isEmpty()) {
                             Toast.makeText(getContext(), "Invalid input. ID is a 6-digit number", Toast.LENGTH_LONG).show();
+                        } else if (!currentUsers.contains(input.getText().toString())) {
+                            Toast.makeText(getContext(), "User Does Not Exist. Please Check Your ID", Toast.LENGTH_LONG).show();
+                        } else {
+                            for (User user : users) {
+                                if (String.valueOf(user.getId()).equals(input.getText().toString())) {
+                                    name = user.getName();
+                                    surname = user.getSurname();
+                                }
+                            }
+                            idText.setText(input.getText().toString());
+                            nameText.setText(name);
+                            surnameText.setText(surname);
+                            editor.putString("id", input.getText().toString());
+                            editor.putString("name", name);
+                            editor.putString("surname", surname);
+                            editor.commit();
                         }
                     }
                 });
@@ -365,5 +313,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
 
 }

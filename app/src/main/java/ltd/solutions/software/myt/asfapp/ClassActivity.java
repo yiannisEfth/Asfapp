@@ -61,6 +61,7 @@ public class ClassActivity extends AppCompatActivity implements PopupMenu.OnMenu
             public void onClick(View view) {
                 Intent intent = new Intent(ClassActivity.this, AddClassActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
