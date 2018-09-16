@@ -120,7 +120,7 @@ public class AddClassActivity extends AppCompatActivity {
                 builder.setTitle("Please Enter the class' capacity");
 
                 final EditText input = new EditText(AddClassActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
