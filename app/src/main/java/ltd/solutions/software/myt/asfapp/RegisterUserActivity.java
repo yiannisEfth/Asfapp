@@ -158,7 +158,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                 builder.setTitle("Please Enter Your Phone Number");
 
                 final EditText input = new EditText(RegisterUserActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
