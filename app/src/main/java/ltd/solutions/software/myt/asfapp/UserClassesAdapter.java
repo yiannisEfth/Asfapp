@@ -10,6 +10,7 @@ import java.util.List;
 
 public class UserClassesAdapter extends RecyclerView.Adapter<UserClassesAdapter.MyViewHolder> {
     private List<ClassObject> classList;
+    public OnClassAdapterClickListener onCAL;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView className, classDate, classSpots, classTime;
@@ -23,8 +24,9 @@ public class UserClassesAdapter extends RecyclerView.Adapter<UserClassesAdapter.
         }
     }
 
-    public UserClassesAdapter(List<ClassObject> classList) {
+    public UserClassesAdapter(List<ClassObject> classList, OnClassAdapterClickListener onCAL) {
         this.classList = classList;
+        this.onCAL = onCAL;
     }
 
     @Override
@@ -41,7 +43,12 @@ public class UserClassesAdapter extends RecyclerView.Adapter<UserClassesAdapter.
         holder.classDate.setText(classObject.getClassDate());
         holder.classSpots.setText(Integer.toString(classObject.getAvailablePlaces()));
         holder.classTime.setText(classObject.getTime());
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCAL.onItemClicked(classList.get(position));
+            }
+        });
     }
 
 
