@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EDFF7A</color>
+    <color name="colorPrimary">#fef200</color>
     <color name="colorPrimaryDark">#555555</color>
     <color name="colorAccent">#EDFF7A</color>
     <color name="colorNavIcon">#686868</color>
@@ -10,4 +10,5 @@
     <color name="app_color_sunny">#EDFF7A</color>
     <color name="app_color_powder_blue">#B5DFCA</color>
     <color name="app_color_gray">#BCBDC0</color>
+    <color name="button_colour">#6C876B</color>
 </resources>

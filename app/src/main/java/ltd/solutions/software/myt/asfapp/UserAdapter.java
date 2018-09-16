@@ -11,15 +11,16 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
 
     private List<User> userList;
-
+TextView userName,userSurname,isActive;
     public class MyViewHolder extends RecyclerView.ViewHolder {
+
         public TextView userName, userSurname, isActive;
 
         public MyViewHolder(View view) {
             super(view);
             userName = (TextView) view.findViewById(R.id.user_name);
-            userSurname = view.findViewById(R.id.user_surname);
-            isActive = view.findViewById(R.id.isActive);
+            userSurname =(TextView) view.findViewById(R.id.user_surname);
+            isActive = (TextView)view.findViewById(R.id.isActive);
         }
     }
 
