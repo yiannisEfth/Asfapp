@@ -133,9 +133,13 @@
         android:id="@+id/profile_height_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:src="@drawable/baseline_edit_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/profile_height_label"
-        tools:layout_editor_absoluteX="86dp" />
+        app:layout_constraintEnd_toStartOf="@+id/profile_height_label"
+        app:layout_constraintHorizontal_bias="0.702"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_height_label" />
 
     <TextView
         android:id="@+id/profile_weight_label"
@@ -170,9 +174,13 @@
         android:id="@+id/profile_weight_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:src="@drawable/baseline_edit_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/profile_weight_label"
-        tools:layout_editor_absoluteX="86dp" />
+        app:layout_constraintEnd_toStartOf="@+id/profile_weight_label"
+        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_weight_label" />
 
     <TextView
         android:id="@+id/profile_started_label"
@@ -206,9 +214,14 @@
         android:id="@+id/profile_started_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:src="@drawable/baseline_edit_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/profile_started_label"
-        tools:layout_editor_absoluteX="86dp" />
+        app:layout_constraintEnd_toStartOf="@+id/profile_started_label"
+        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_started_label" />
 
     <TextView
         android:id="@+id/profile_id_label"
@@ -241,9 +254,12 @@
         android:id="@+id/profile_id_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:src="@drawable/baseline_edit_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/profile_id_label"
-        tools:layout_editor_absoluteX="86dp" />
+        app:layout_constraintEnd_toStartOf="@+id/profile_id_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_id_label" />
 
     <Button
         android:id="@+id/profile_button_clear"
