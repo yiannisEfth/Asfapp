@@ -9,6 +9,18 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+    <CheckBox
+        android:id="@+id/chkSingleClass"
+        android:layout_width="144dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="252dp"
+        android:onClick="checkBoxListeners"
+        android:text="@string/singleClass"
+        app:layout_constraintHorizontal_bias="0.841"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/separator_profile_1"
         android:layout_width="match_parent"
@@ -36,13 +48,13 @@
         android:id="@+id/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="328dp"
         android:text="@string/time"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintHorizontal_bias="0.769"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -127,27 +139,27 @@
 
     <CheckBox
         android:id="@+id/chkThreeMonths"
-        android:layout_width="88dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="216dp"
+        android:layout_width="104dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="212dp"
+        android:onClick="checkBoxListeners"
         android:text="@string/threeMonths"
-        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintHorizontal_bias="0.721"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="checkBoxListeners"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:id="@+id/chkOneMonth"
-        android:layout_width="88dp"
-        android:layout_height="31dp"
+        android:layout_width="97dp"
+        android:layout_height="41dp"
         android:layout_marginTop="160dp"
+        android:onClick="checkBoxListeners"
         android:text="@string/oneMonth"
-        app:layout_constraintHorizontal_bias="0.739"
+        app:layout_constraintHorizontal_bias="0.703"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="checkBoxListeners"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 
@@ -235,37 +247,39 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="356dp"
         android:hint="@string/hours"
-        android:id="@+id/hours"
-        app:layout_constraintHorizontal_bias="0.667"
+        app:layout_constraintHorizontal_bias="0.637"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="number"/>
 
     <EditText
+        android:id="@+id/minutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="356dp"
         android:hint="@string/minutes"
-        android:id="@+id/minutes"
         app:layout_constraintHorizontal_bias="0.948"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="number"/>
 
     <TextView
         android:layout_width="6dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="308dp"
+        android:layout_marginTop="364dp"
         android:text="@string/semicolon"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.746"
+        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

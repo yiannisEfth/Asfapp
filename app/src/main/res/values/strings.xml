@@ -54,6 +54,7 @@
     <string name="minutes">Minutes</string>
     <string name="register_class">Register Class</string>
     <string name="add">ADD</string>
+    <string name="singleClass">For one time</string>
     >>>>>>> 341a3383f599be28888aae60b70507da763699b5
 
 </resources>
