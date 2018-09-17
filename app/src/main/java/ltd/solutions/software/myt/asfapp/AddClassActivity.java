@@ -1,6 +1,7 @@
 package ltd.solutions.software.myt.asfapp;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -30,7 +33,7 @@ import java.util.regex.Pattern;
 
 public class AddClassActivity extends AppCompatActivity {
 
-    private CheckBox chkMonday, chkTuesday, chkWendseday, chkThursday, chkFriday, chkSaturday, chkSunday, chk1Month, chk3Months;
+    private CheckBox chkMonday, chkTuesday, chkWendseday, chkThursday, chkFriday, chkSaturday, chkSunday, chk1Month, chk3Months, chkSingleClass;
     private TextView nameText, capacityText, hoursText, minutesText;
     private ImageView nameEdit, capacityEdit;
     private Button btnAdd;
@@ -39,6 +42,10 @@ public class AddClassActivity extends AppCompatActivity {
     private String time;
     private List<ClassObject> currentClasses = new ArrayList<>();
     private boolean classAlreadyExists;
+    private Calendar calendar = Calendar.getInstance();
+    private DatePickerDialog.OnDateSetListener date;
+    private String datePicked;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class AddClassActivity extends AppCompatActivity {
         chkSunday = findViewById(R.id.chkSunday);
         chk1Month = findViewById(R.id.chkOneMonth);
         chk3Months = findViewById(R.id.chkThreeMonths);
+        chkSingleClass = findViewById(R.id.chkSingleClass);
         nameText = findViewById(R.id.class_name_input);
         capacityText = findViewById(R.id.class_capacity_input);
         hoursText = findViewById(R.id.hours);
@@ -75,11 +83,58 @@ public class AddClassActivity extends AppCompatActivity {
 
             case R.id.chkOneMonth:
                 chk3Months.setChecked(false);
+                chkSingleClass.setChecked(false);
+                chkSingleClass.setText(R.string.singleClass);
+                chkMonday.setEnabled(true);
+                chkTuesday.setEnabled(true);
+                chkWendseday.setEnabled(true);
+                chkThursday.setEnabled(true);
+                chkFriday.setEnabled(true);
+                chkSaturday.setEnabled(true);
+                chkSunday.setEnabled(true);
                 break;
             case R.id.chkThreeMonths:
                 chk1Month.setChecked(false);
+                chkSingleClass.setChecked(false);
+                chkSingleClass.setText(R.string.singleClass);
+                chkMonday.setEnabled(true);
+                chkTuesday.setEnabled(true);
+                chkWendseday.setEnabled(true);
+                chkThursday.setEnabled(true);
+                chkFriday.setEnabled(true);
+                chkSaturday.setEnabled(true);
+                chkSunday.setEnabled(true);
                 break;
+            case R.id.chkSingleClass:
+                chk1Month.setChecked(false);
+                chk3Months.setChecked(false);
+                chkMonday.setEnabled(false);
+                chkTuesday.setEnabled(false);
+                chkWendseday.setEnabled(false);
+                chkThursday.setEnabled(false);
+                chkFriday.setEnabled(false);
+                chkSaturday.setEnabled(false);
+                chkSunday.setEnabled(false);
 
+                date = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        String formatDate = "dd/MM/yyyy";
+                        SimpleDateFormat sdf = new SimpleDateFormat(formatDate, Locale.US);
+                        datePicked = sdf.format(calendar.getTime());
+                        chkSingleClass.setText(datePicked);
+                    }
+                };
+
+                new DatePickerDialog(AddClassActivity.this, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+
+                break;
             default:
                 break;
         }
@@ -150,6 +205,7 @@ public class AddClassActivity extends AppCompatActivity {
         });
     }
 
+
     private void btnListener() {
         btnAdd.setOnClickListener(new View.OnClickListener() {
 
@@ -157,7 +213,9 @@ public class AddClassActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Checking for 1 month
-                if (nameText.getText().toString().isEmpty() || capacityText.getText().toString().isEmpty()) {
+                if (nameText.getText().toString().isEmpty() ||
+                        capacityText.getText().toString().isEmpty() || hoursText.getText().toString().isEmpty()
+                        || minutesText.getText().toString().isEmpty()) {
                     Toast.makeText(AddClassActivity.this, "Class Creation Failed. Please Fill Out All Necessary Fields", Toast.LENGTH_LONG).show();
                 } else {
                     if (chkMonday.isChecked() && chk1Month.isChecked()) {
@@ -203,28 +261,35 @@ public class AddClassActivity extends AppCompatActivity {
                     if (chkSaturday.isChecked() && chk3Months.isChecked()) {
                         dayCheckedThreeMonth(7);
                     }
-                }
-                final AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
-                builder.setTitle("Success");
-                builder.setMessage("Successful addition of " + nameText.getText().toString());
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(AddClassActivity.this, AdminMenu.class);
-                        startActivity(intent);
-                        finish();
+
+                    //check for single events
+                    if (chkSingleClass.isChecked()) {
+                        dayCheckedSingleClass();
                     }
-                });
-                builder.show();
+
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(AddClassActivity.this);
+                    builder.setTitle("Success");
+                    builder.setMessage("Successful addition of " + nameText.getText().toString());
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(AddClassActivity.this, AdminMenu.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.show();
+
+                }
             }
         });
     }
 
     private void dayCheckedOneMonth(int day) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        Calendar calendar = Calendar.getInstance();
-        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
-            calendar.add(Calendar.DATE, 1);
+        Calendar calendar1 = Calendar.getInstance();
+        while (calendar1.get(Calendar.DAY_OF_WEEK) != day) {
+            calendar1.add(Calendar.DATE, 1);
         }
         Random rdm = new Random();
         for (int i = 0; i < 4; i++) {
@@ -232,12 +297,12 @@ public class AddClassActivity extends AppCompatActivity {
             if (checkClassExistance(classID)) {
                 classID = rdm.nextInt(999999);
             }
-            String date = dateFormat.format(calendar.getTime());
+            String date = dateFormat.format(calendar1.getTime());
             DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
             Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
             newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
             newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(classID);
-            calendar.add(Calendar.DATE, 7);
+            calendar1.add(Calendar.DATE, 7);
         }
 
 
@@ -245,9 +310,9 @@ public class AddClassActivity extends AppCompatActivity {
 
     private void dayCheckedThreeMonth(int day) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        Calendar calendar = Calendar.getInstance();
-        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
-            calendar.add(Calendar.DATE, 1);
+        Calendar calendar2 = Calendar.getInstance();
+        while (calendar2.get(Calendar.DAY_OF_WEEK) != day) {
+            calendar2.add(Calendar.DATE, 1);
         }
         Random rdm = new Random();
         for (int i = 0; i < 12; i++) {
@@ -255,16 +320,30 @@ public class AddClassActivity extends AppCompatActivity {
             if (checkClassExistance(classID)) {
                 classID = rdm.nextInt(999999);
             }
-            String date = dateFormat.format(calendar.getTime());
+            String date = dateFormat.format(calendar2.getTime());
             DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
             Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
             newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
             newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(String.valueOf(classID));
-            calendar.add(Calendar.DATE, 7);
+            calendar2.add(Calendar.DATE, 7);
         }
 
 
     }
+
+    private void dayCheckedSingleClass() {
+        Random rdm = new Random();
+        int classID = rdm.nextInt(999999);
+        if (checkClassExistance(classID)) {
+            classID = rdm.nextInt(999999);
+        }
+        String date = chkSingleClass.getText().toString();
+        DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
+        Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
+        newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
+        newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(classID);
+    }
+
 
     public void fetchClassIds() {
         classesReference.addValueEventListener(new ValueEventListener() {
