@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,12 +17,25 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference classesReference = database.getReference("Classes");
+    private Date previousDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +47,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setSelectedItemId(R.id.navigation_home);
         sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+            //we are not connected to a network
+            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
+            this.finish();
+        }
         checkFirstTime();
+        deleteOldClasses();
     }
 
     private boolean loadFragment(android.support.v4.app.Fragment fragment) {
@@ -130,6 +153,55 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             builder.show();
         }
         editor.putString("firstStart", "no").commit();
+    }
+
+    //Method to delete classes from the databse which are less than a week old
+    public void deleteOldClasses() {
+        Calendar cal = Calendar.getInstance();
+        final SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
+        cal.add(Calendar.DAY_OF_YEAR, -7);
+        final String date = s.format(new Date(cal.getTimeInMillis()));
+        try {
+            previousDate = s.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        classesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children) {
+                    ClassObject dbClass = child.getValue(ClassObject.class);
+                    try {
+                        Date dbDate = s.parse(dbClass.getClassDate());
+                        if (dbDate.before(previousDate)) {
+                            classesReference.child(String.valueOf(dbClass.getID())).removeValue();
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+            //we are not connected to a network
+            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
+            this.finish();
+        }
     }
 }
 

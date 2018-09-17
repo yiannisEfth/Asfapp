@@ -11,21 +11,23 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:textSize="16dp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/user_surname"
-        android:layout_width="match_parent"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/class_name" />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/user_name" />
 
     <TextView
         android:id="@+id/isActive"
-        android:layout_width="wrap_content"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
