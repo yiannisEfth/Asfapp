@@ -50,6 +50,7 @@ public class ClassesFragment extends Fragment {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
     private boolean isAttended = false;
+    private boolean isUserActive;
 
     @Nullable
     @Override
@@ -157,6 +158,7 @@ public class ClassesFragment extends Fragment {
         builder.setPositiveButton("Book", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                checkIfUserIsActive(input.getText().toString());
                 editor.putString("id", input.getText().toString());
                 editor.commit();
                 if (!Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString())) {
@@ -170,6 +172,8 @@ public class ClassesFragment extends Fragment {
                     Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
                 } else if (!currentUsers.contains(Integer.parseInt(input.getText().toString()))) {
                     Toast.makeText(getContext(), "User Does Not Exist", Toast.LENGTH_LONG).show();
+                } else if (!isUserActive) {
+                    Toast.makeText(getContext(), "You Are Not Active. Please Contact The Gym", Toast.LENGTH_LONG).show();
                 } else {
                     usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(desiredClass.getID())).setValue(desiredClass.getClassName());
                     classesReference.child(String.valueOf(desiredClass.getID())).child("availablePlaces").setValue(desiredClass.getAvailablePlaces() - 1);
@@ -231,5 +235,21 @@ public class ClassesFragment extends Fragment {
             }
         });
         return userList;
+    }
+
+    public boolean checkIfUserIsActive(final String id) {
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                isUserActive = dataSnapshot.child(id).child("isActive").getValue(Boolean.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return isUserActive;
     }
 }

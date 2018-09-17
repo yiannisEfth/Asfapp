@@ -11,7 +11,9 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
 
     private List<User> userList;
-TextView userName,userSurname,isActive;
+    public OnUserAdapterClickListener onUAL;
+    TextView userName, userSurname, isActive;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView userName, userSurname, isActive;
@@ -19,12 +21,15 @@ TextView userName,userSurname,isActive;
         public MyViewHolder(View view) {
             super(view);
             userName = (TextView) view.findViewById(R.id.user_name);
-            userSurname =(TextView) view.findViewById(R.id.user_surname);
-            isActive = (TextView)view.findViewById(R.id.isActive);
+            userSurname = (TextView) view.findViewById(R.id.user_surname);
+            isActive = (TextView) view.findViewById(R.id.isActive);
         }
     }
 
-
+    public UserAdapter(List<User> userList, OnUserAdapterClickListener onUAL) {
+        this.userList = userList;
+        this.onUAL = onUAL;
+    }
 
     @Override
     public UserAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,12 +39,19 @@ TextView userName,userSurname,isActive;
     }
 
     @Override
-    public void onBindViewHolder(UserAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(UserAdapter.MyViewHolder holder, final int position) {
 
         User user = userList.get(position);
-        holder.userName.setText(user.getName());
         holder.userSurname.setText(user.getSurname());
+        holder.userName.setText(user.getName());
         holder.isActive.setText(Boolean.toString(user.isActive));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onUAL.onItemClicked(userList.get(position));
+            }
+        });
 
     }
 
