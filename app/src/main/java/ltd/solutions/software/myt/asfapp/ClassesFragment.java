@@ -57,6 +57,7 @@ public class ClassesFragment extends Fragment {
     private boolean finalAlreadyAttending;
     private ClassObject classObject;
     private List<Integer> attending = new ArrayList<>();
+    private int ids;
 
 
     @Nullable
@@ -210,27 +211,29 @@ public class ClassesFragment extends Fragment {
                                 currentDate = format.format(calendar.getTime());
                                 classObject.setClassDate(currentDate);
                                 int j = 0;
-                                for (ClassObject classObject3 : dummyList) {
-                                    finalAlreadyAttending = checkAttendance(classObject3.getID());
-                                    if (classObject3.getClassDate().equals(classObject.getClassDate()) &&
-                                            classObject3.getClassName().equals(classObject.getClassName())) {
-                                        if (classObject3.getAvailablePlaces() == 0) {
-                                            Toast.makeText(getContext(), "This Class Is Fully Booked", Toast.LENGTH_LONG).show();
-                                        } else if (finalAlreadyAttending) {
-                                            Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+                                for(int i = 0; i < 3; i++) {
+                                    for (ClassObject classObject3 : dummyList) {
+                                        finalAlreadyAttending = checkAttendance(classObject3.getID());
+                                        if (classObject3.getClassDate().equals(classObject.getClassDate()) &&
+                                                classObject3.getClassName().equals(classObject.getClassName())) {
+                                            if (classObject3.getAvailablePlaces() == 0) {
+                                                Toast.makeText(getContext(), "This Class Is Fully Booked", Toast.LENGTH_LONG).show();
+                                            } else if (finalAlreadyAttending) {
+                                                Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
 
-                                        } else if (checkAttendance(classObject3.getID())) {
-                                            Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(classObject3.getID())).setValue(classObject.getClassName());
-                                            classesReference.child(String.valueOf(classObject3.getID())).child("availablePlaces").setValue(classObject3.getAvailablePlaces() - 1);
-                                            classesReference.child(String.valueOf(classObject3.getID())).child("reservedPlaces").setValue(classObject3.getReservedPlaces() + 1);
-                                            classObject3.setAvailablePlaces(classObject3.getAvailablePlaces() - 1);
-                                            classesAdapter.notifyDataSetChanged();
-                                            Toast.makeText(getContext(), "Booking Successful at " + classObject3.getClassDate(), Toast.LENGTH_LONG).show();
-                                            calendar.add(Calendar.DATE, 7);
-                                            currentDate = format.format(calendar.getTime());
-                                            classObject.setClassDate(currentDate);
+                                            } else if (checkAttendance(classObject3.getID())) {
+                                                Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(classObject3.getID())).setValue(classObject.getClassName());
+                                                classesReference.child(String.valueOf(classObject3.getID())).child("availablePlaces").setValue(classObject3.getAvailablePlaces() - 1);
+                                                classesReference.child(String.valueOf(classObject3.getID())).child("reservedPlaces").setValue(classObject3.getReservedPlaces() + 1);
+                                                classObject3.setAvailablePlaces(classObject3.getAvailablePlaces() - 1);
+                                                classesAdapter.notifyDataSetChanged();
+                                                Toast.makeText(getContext(), "Booking Successful at " + classObject3.getClassDate(), Toast.LENGTH_LONG).show();
+                                                calendar.add(Calendar.DATE, 7);
+                                                currentDate = format.format(calendar.getTime());
+                                                classObject.setClassDate(currentDate);
+                                            }
                                         }
                                     }
                                 }
@@ -269,8 +272,10 @@ public class ClassesFragment extends Fragment {
         builder.show();
     }
 
-    public boolean checkAttendance(final int id) {
+    public boolean checkAttendance(int id) {
+        isAttended = false;
         Log.i("ID ENTERED", String.valueOf(id));
+        ids = id;
         attending = new ArrayList<>();
         usersReference.child(sharedPref.getString("id", null)).child("Attending").addValueEventListener(new ValueEventListener() {
             @Override
@@ -278,7 +283,7 @@ public class ClassesFragment extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     attending.add(Integer.parseInt(child.getKey()));
                     Log.i("ATTENDING", String.valueOf(child.getKey()) + "SIZE: " + String.valueOf(attending.size()));
-                    if (id == Integer.parseInt(child.getKey())) {
+                    if (ids == Integer.parseInt(child.getKey())) {
                         isAttended = true;
                     }
                 }
