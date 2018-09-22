@@ -139,7 +139,8 @@
         app:layout_constraintEnd_toStartOf="@+id/profile_height_label"
         app:layout_constraintHorizontal_bias="0.702"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_height_label" />
+        app:layout_constraintTop_toTopOf="@+id/profile_height_label"
+        />
 
     <TextView
         android:id="@+id/profile_weight_label"

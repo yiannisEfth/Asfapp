@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/profile_button_style"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#000000"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/class_recycler_view"

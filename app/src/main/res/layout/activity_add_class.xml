@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GymInfoFragment"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="81dp"
+    android:background="@color/colorPrimaryDark">
 
 
     <CheckBox
@@ -25,7 +26,7 @@
         android:id="@+id/separator_profile_1"
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:background="@color/app_color_gray"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,6 +40,7 @@
         android:textColor="#000000"
         android:textSize="35sp"
         android:textStyle="bold"
+        android:background="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -225,7 +227,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/profile_button_style"
         android:text="@string/add"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.868"
