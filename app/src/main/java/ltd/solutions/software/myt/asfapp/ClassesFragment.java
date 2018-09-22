@@ -27,10 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -40,6 +42,7 @@ public class ClassesFragment extends Fragment {
     private RecyclerView classListView;
     private List<ClassObject> classesList = new ArrayList<>();
     private List<ClassObject> dummyList = new ArrayList<>();
+    private List<ClassObject> allClasses = new ArrayList<>();
     private ClassesAdapter classesAdapter;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference classesReference = database.getReference("Classes");
@@ -51,6 +54,11 @@ public class ClassesFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private boolean isAttended = false;
     private boolean isUserActive;
+    private boolean finalAlreadyAttending;
+    private ClassObject classObject;
+    private List<Integer> attending = new ArrayList<>();
+    private int ids;
+
 
     @Nullable
     @Override
@@ -100,6 +108,7 @@ public class ClassesFragment extends Fragment {
                         classesList.add(co);
                     }
                 }
+
                 Collections.sort(classesList, comparator);
                 classesAdapter.notifyDataSetChanged();
             }
@@ -141,6 +150,7 @@ public class ClassesFragment extends Fragment {
 
     public void setupClassBooking(ClassObject fetchedClass) {
         final ClassObject desiredClass = fetchedClass;
+        classObject = fetchedClass;
         boolean alreadyAttending = false;
         isAttended = false;
         final List<Integer> currentUsers = checkIfUserExists();
@@ -152,9 +162,9 @@ public class ClassesFragment extends Fragment {
             input.setText(sharedPref.getString("id", null));
             alreadyAttending = checkAttendance(fetchedClass.getID());
         }
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
         builder.setView(input);
-        final boolean finalAlreadyAttending = alreadyAttending;
+        finalAlreadyAttending = alreadyAttending;
         builder.setPositiveButton("Book", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -182,6 +192,73 @@ public class ClassesFragment extends Fragment {
                     classesAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Booking Successful!", Toast.LENGTH_LONG).show();
 
+
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+
+                    builder2.setTitle("Book for 1 month?");
+                    builder2.setMessage("Would you like to book the specific class on the same day for a month if it is available?");
+
+                    builder2.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                            String currentDate = classObject.getClassDate();
+                            try {
+                                Date date = format.parse(currentDate);
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(date);
+                                calendar.add(Calendar.DATE, 7);
+                                currentDate = format.format(calendar.getTime());
+                                classObject.setClassDate(currentDate);
+                                int j = 0;
+                                for(int i = 0; i < 3; i++) {
+                                    for (ClassObject classObject3 : dummyList) {
+                                        finalAlreadyAttending = checkAttendance(classObject3.getID());
+                                        if (classObject3.getClassDate().equals(classObject.getClassDate()) &&
+                                                classObject3.getClassName().equals(classObject.getClassName())) {
+                                            if (classObject3.getAvailablePlaces() == 0) {
+                                                Toast.makeText(getContext(), "This Class Is Fully Booked", Toast.LENGTH_LONG).show();
+                                            } else if (finalAlreadyAttending) {
+                                                Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+
+                                            } else if (checkAttendance(classObject3.getID())) {
+                                                Toast.makeText(getContext(), "You Are Already Booked For this Class", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(classObject3.getID())).setValue(classObject.getClassName());
+                                                classesReference.child(String.valueOf(classObject3.getID())).child("availablePlaces").setValue(classObject3.getAvailablePlaces() - 1);
+                                                classesReference.child(String.valueOf(classObject3.getID())).child("reservedPlaces").setValue(classObject3.getReservedPlaces() + 1);
+                                                classObject3.setAvailablePlaces(classObject3.getAvailablePlaces() - 1);
+                                                classesAdapter.notifyDataSetChanged();
+                                                Toast.makeText(getContext(), "Booking Successful at " + classObject3.getClassDate(), Toast.LENGTH_LONG).show();
+                                                calendar.add(Calendar.DATE, 7);
+                                                currentDate = format.format(calendar.getTime());
+                                                classObject.setClassDate(currentDate);
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder2.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder2.create();
+                    alert.show();
+
                 }
             }
         });
@@ -195,16 +272,18 @@ public class ClassesFragment extends Fragment {
         builder.show();
     }
 
-    public boolean checkAttendance(final int id) {
+    public boolean checkAttendance(int id) {
+        isAttended = false;
         Log.i("ID ENTERED", String.valueOf(id));
-        final List<Integer> attending = new ArrayList<>();
+        ids = id;
+        attending = new ArrayList<>();
         usersReference.child(sharedPref.getString("id", null)).child("Attending").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     attending.add(Integer.parseInt(child.getKey()));
                     Log.i("ATTENDING", String.valueOf(child.getKey()) + "SIZE: " + String.valueOf(attending.size()));
-                    if (id == Integer.parseInt(child.getKey())) {
+                    if (ids == Integer.parseInt(child.getKey())) {
                         isAttended = true;
                     }
                 }
