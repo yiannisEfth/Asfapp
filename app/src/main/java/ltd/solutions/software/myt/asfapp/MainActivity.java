@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (input.getText().toString().equals("admin")) {
+                        if (input.getText().toString().equals("wtfchampion3")) {
                             Intent intent = new Intent(MainActivity.this, AdminMenu.class);
                             startActivity(intent);
                         }

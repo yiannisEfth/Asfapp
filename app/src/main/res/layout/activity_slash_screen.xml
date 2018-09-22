@@ -7,11 +7,40 @@
     tools:context=".SlashScreen"
     android:background="@color/colorPrimary"
     >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ASF"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center_horizontal"
+            android:textSize="50dp" />
+    </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo"
-        />
+        android:layout_height="429dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="69dp"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="FITNESS AND PERFORMANCE" />
+
 
 </RelativeLayout>
