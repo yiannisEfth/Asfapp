@@ -61,8 +61,4 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
 }

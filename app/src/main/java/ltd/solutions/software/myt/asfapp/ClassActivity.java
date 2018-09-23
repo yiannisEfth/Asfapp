@@ -81,18 +81,18 @@ public class ClassActivity extends AppCompatActivity implements PopupMenu.OnMenu
     }
 
     public void loadFromFirebase() {
+        final ClassComparator comparator = new ClassComparator();
         classesReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 classesList.clear();
-                ClassComparator comparator = new ClassComparator();
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     ClassObject dbClass = child.getValue(ClassObject.class);
                     classesList.add(dbClass);
+                    Collections.sort(classesList, comparator);
+                    classesAdapter.notifyDataSetChanged();
                 }
-                Collections.sort(classesList, comparator);
-                classesAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -90,26 +90,27 @@ public class ClientView_Activity extends AppCompatActivity {
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                userList.clear();
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     User dbClass = child.getValue(User.class);
                     userList.add(dbClass);
+                    Collections.sort(userList, new Comparator<User>() {
+                        @Override
+                        public int compare(User u1, User u2) {
+                            int res = u1.getSurname().compareToIgnoreCase(u2.getSurname());
+                            if (res != 0) {
+                                return res;
+                            }
+                            res = u1.getName().compareToIgnoreCase(u2.getName());
+                            if (res != 0) {
+                                return res;
+                            }
+                            return Boolean.compare(u2.isActive, u1.isActive);
+                        }
+                    });
+                    userAdapter.notifyDataSetChanged();
                 }
-                Collections.sort(userList, new Comparator<User>() {
-                    @Override
-                    public int compare(User u1, User u2) {
-                        int res = u1.getSurname().compareToIgnoreCase(u2.getSurname());
-                        if (res != 0) {
-                            return res;
-                        }
-                        res = u1.getName().compareToIgnoreCase(u2.getName());
-                        if (res != 0) {
-                            return res;
-                        }
-                        return Boolean.compare(u2.isActive, u1.isActive);
-                    }
-                });
-                userAdapter.notifyDataSetChanged();
             }
 
             @Override

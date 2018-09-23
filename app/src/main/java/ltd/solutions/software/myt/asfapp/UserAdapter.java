@@ -44,7 +44,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         User user = userList.get(position);
         holder.userSurname.setText(user.getSurname());
         holder.userName.setText(user.getName());
-        holder.isActive.setText(Boolean.toString(user.isActive));
+        if (user.isActive) {
+            holder.isActive.setText("Yes");
+        } else {
+            holder.isActive.setText("No");
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
