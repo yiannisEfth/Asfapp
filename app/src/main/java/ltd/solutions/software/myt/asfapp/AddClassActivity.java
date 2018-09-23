@@ -324,7 +324,7 @@ public class AddClassActivity extends AppCompatActivity {
             DatabaseReference newClass = FirebaseDatabase.getInstance().getReference();
             Class classes = new Class(nameText.getText().toString(), Integer.parseInt(capacityText.getText().toString()), date, hoursText.getText().toString(), minutesText.getText().toString());
             newClass.child("Classes").child(String.valueOf(classID)).setValue(classes);
-            newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(String.valueOf(classID));
+            newClass.child("Classes").child(String.valueOf(classID)).child("id").setValue(classID);
             calendar2.add(Calendar.DATE, 7);
         }
 

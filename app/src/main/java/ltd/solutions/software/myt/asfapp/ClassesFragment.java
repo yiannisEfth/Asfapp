@@ -233,6 +233,7 @@ public class ClassesFragment extends Fragment {
                                                 calendar.add(Calendar.DATE, 7);
                                                 currentDate = format.format(calendar.getTime());
                                                 classObject.setClassDate(currentDate);
+                                                break;
                                             }
                                         }
                                     }
