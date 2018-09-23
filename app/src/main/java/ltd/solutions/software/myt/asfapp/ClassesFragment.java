@@ -92,6 +92,7 @@ public class ClassesFragment extends Fragment {
         Button dateBtn = (Button) getView().findViewById(R.id.datespinner);
         final ClassComparator comparator = new ClassComparator();
         calendar = Calendar.getInstance();
+
         //making the datepicked variable the same as the date picked from the calendar
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
