@@ -1,6 +1,11 @@
 package ltd.solutions.software.myt.asfapp;
 
 import android.app.AlarmManager;
+<<<<<<< HEAD
+=======
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+>>>>>>> f232460880d314c11695a19cac7b8257858f522d
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,10 +13,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -29,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -58,8 +66,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         checkFirstTime();
         deleteOldClasses();
+<<<<<<< HEAD
 
 
+=======
+        setNotifications();
+>>>>>>> f232460880d314c11695a19cac7b8257858f522d
     }
 
     private boolean loadFragment(android.support.v4.app.Fragment fragment) {
@@ -208,6 +220,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void setNotifications(){
+        Intent alertIntent = new Intent(this, AlertReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, 150000 ,PendingIntent.getBroadcast(this , 1, alertIntent ,PendingIntent.FLAG_UPDATE_CURRENT));
+    }
+>>>>>>> f232460880d314c11695a19cac7b8257858f522d
 }
 
 
