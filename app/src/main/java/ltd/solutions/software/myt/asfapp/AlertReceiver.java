@@ -14,63 +14,54 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 
-public class AlertReceiver extends BroadcastReceiver {
+import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
+
+public class AlertReceiver extends BroadcastReceiver{
+    private static final String CHANNEL_ID = "ltd.solutions.software.myt.asfapp.channelId";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        String yourDate = "24/09/2018";
-        String yourHour = "20:29:23";
-        Calendar calendar = Calendar.getInstance();
-        Date todayDate = calendar.getTime();
-        Date todayTime = calendar.getTime();
-        DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        date.format(todayDate);
-        DateFormat hour = new SimpleDateFormat("HH:mm:ss");
-        hour.format(todayTime);
-        if (todayDate.equals(yourDate) && todayTime.equals(yourHour)) {
-            createNotification(context, "Times up", "5 Seconds have passed", "Alert");
-        }
-    }
+        Intent notificationIntent = new Intent(context, NotificationActivity.class);
 
-    public void createNotification(Context context, String msg, String msgText, String msgAlert) {
-        //Checks if api is 26 or above
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(NotificationActivity.class);
+        stackBuilder.addNextIntent(notificationIntent);
+
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(context);
+
+        Notification notification = builder.setContentTitle("Demo App Notification")
+                .setContentText("New Notification From Demo App..")
+                .setTicker("New Message Alert!")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent).build();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //Creates a notification popup for the user to see
-            NotificationChannel channel = new NotificationChannel("2", "Notification channel", NotificationManager.IMPORTANCE_DEFAULT);
-            //sets all the information of the popup
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "2")
-                    .setContentTitle(msg)
-                    .setContentText(msgText)
-                    .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            Intent notificationIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(pendingIntent);
-
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-            notificationManager.notify(31234, mBuilder.build());
-        } else {
-            //for api below 26 uses this code to create the notification because channels are only
-            //available for api 26 and above
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-            mBuilder.setContentTitle("A point of interest is nearby!");
-            mBuilder.setContentText("You are very close to " + ".");
-            mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            Intent notificationIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(pendingIntent);
-
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(31234, mBuilder.build());
-
+            builder.setChannelId(CHANNEL_ID);
         }
 
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "NotificationDemo",
+                    IMPORTANCE_DEFAULT
+            );
+            notificationManager.createNotificationChannel(channel);
+        }
 
-
+        notificationManager.notify(0, notification);
     }
 }

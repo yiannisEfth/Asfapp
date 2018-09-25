@@ -1,11 +1,10 @@
 package ltd.solutions.software.myt.asfapp;
 
 import android.app.AlarmManager;
-<<<<<<< HEAD
-=======
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
->>>>>>> f232460880d314c11695a19cac7b8257858f522d
+
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,6 +50,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Notifications
+         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+         Calendar calendar = Calendar.getInstance();
+         calendar.add(Calendar.SECOND,5);
+
+         Intent intent = new Intent("");
+         PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+         alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),broadcast);
+        //Notifications
+
         loadFragment(new MainFragment());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
@@ -66,12 +77,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         checkFirstTime();
         deleteOldClasses();
-<<<<<<< HEAD
 
 
-=======
-        setNotifications();
->>>>>>> f232460880d314c11695a19cac7b8257858f522d
+
     }
 
     private boolean loadFragment(android.support.v4.app.Fragment fragment) {
@@ -220,14 +228,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
-<<<<<<< HEAD
-=======
-    public void setNotifications(){
-        Intent alertIntent = new Intent(this, AlertReceiver.class);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, 150000 ,PendingIntent.getBroadcast(this , 1, alertIntent ,PendingIntent.FLAG_UPDATE_CURRENT));
-    }
->>>>>>> f232460880d314c11695a19cac7b8257858f522d
+
+
+
 }
 
 
