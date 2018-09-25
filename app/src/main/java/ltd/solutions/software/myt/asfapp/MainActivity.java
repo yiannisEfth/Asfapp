@@ -1,5 +1,7 @@
 package ltd.solutions.software.myt.asfapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         checkFirstTime();
         deleteOldClasses();
+
+
     }
 
     private boolean loadFragment(android.support.v4.app.Fragment fragment) {
@@ -203,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             this.finish();
         }
     }
+
 }
 
 

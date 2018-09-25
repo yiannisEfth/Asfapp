@@ -38,7 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"
         android:textStyle="bold"
-        android:textSize="25dp"
+        android:textSize="27dp"
         android:textColor="@color/colorPrimaryDark"
         android:text="FITNESS AND PERFORMANCE" />
 
