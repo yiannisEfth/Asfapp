@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/admin_class_menu_view"
+        android:orderInCategory="100"
+        android:title="View Attending Clients" />
+    <item
         android:id="@+id/admin_class_menu_edit_name"
         android:orderInCategory="100"
         android:title="Edit Name" />

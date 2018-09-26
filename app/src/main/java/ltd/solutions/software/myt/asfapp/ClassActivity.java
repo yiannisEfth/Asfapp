@@ -133,6 +133,10 @@ public class ClassActivity extends AppCompatActivity implements PopupMenu.OnMenu
                 deleteClass(targetClass);
                 break;
 
+            case R.id.admin_class_menu_view:
+                viewClassInfo(targetClass.getID());
+                break;
+
             default:
                 break;
         }
@@ -253,5 +257,11 @@ public class ClassActivity extends AppCompatActivity implements PopupMenu.OnMenu
             }
         });
         builder.show();
+    }
+
+    public void viewClassInfo(int selectedClassID) {
+        Intent classInfo= new Intent(ClassActivity.this, AdminClassInfo.class);
+        classInfo.putExtra("selectedID", selectedClassID);
+        startActivity(classInfo);
     }
 }

@@ -33,7 +33,8 @@ public class ClientView_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        userAdapter = new UserAdapter(userList, new OnUserAdapterClickListener() {
+        userAdapter = new UserAdapter(userList,
+                new OnUserAdapterClickListener() {
             @Override
             public void onItemClicked(User user) {
                 changeUserActiveInactive(user);
