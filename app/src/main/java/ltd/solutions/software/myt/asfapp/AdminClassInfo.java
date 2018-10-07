@@ -49,10 +49,10 @@ public class AdminClassInfo extends AppCompatActivity {
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //userList.clear();
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
                 for (DataSnapshot child : children) {
                     targetUser = child.getValue(User.class);
+                    Log.i("Fetching for", targetUser.getName());
                     fetchUserClasses(targetUser);
                 }
             }
@@ -64,28 +64,16 @@ public class AdminClassInfo extends AppCompatActivity {
         });
     }
 
-    public void fetchUserClasses(User user) {
+    public void fetchUserClasses(final User user) {
+        Log.i("USER IS", user.getName());
         usersReference.child(String.valueOf(user.getId())).child("Attending").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.i("CalledClassIs", String.valueOf(calledClass));
+                    Log.i("User class is", String.valueOf(child.getKey()));
                     if (child.getKey().equals(String.valueOf(calledClass))) {
-                        userList.add(targetUser);
-                        Collections.sort(userList, new Comparator<User>() {
-                            @Override
-                            public int compare(User u1, User u2) {
-                                int res = u1.getSurname().compareToIgnoreCase(u2.getSurname());
-                                if (res != 0) {
-                                    return res;
-                                }
-                                res = u1.getName().compareToIgnoreCase(u2.getName());
-                                if (res != 0) {
-                                    return res;
-                                }
-                                return Integer.compare(u1.getId(), u2.getId());
-                            }
-                        });
-                        userAdapter.notifyDataSetChanged();
+                        addToList(user);
                     }
                 }
             }
@@ -95,5 +83,25 @@ public class AdminClassInfo extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void addToList(User user) {
+        Log.i("ADDING", user.getName());
+        userList.add(user);
+        Collections.sort(userList, new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                int res = u1.getSurname().compareToIgnoreCase(u2.getSurname());
+                if (res != 0) {
+                    return res;
+                }
+                res = u1.getName().compareToIgnoreCase(u2.getName());
+                if (res != 0) {
+                    return res;
+                }
+                return Integer.compare(u1.getId(), u2.getId());
+            }
+        });
+        userAdapter.notifyDataSetChanged();
     }
 }
