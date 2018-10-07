@@ -154,11 +154,7 @@ public class AddClassActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (Pattern.matches("[A-z]{0,20}", input.getText().toString())) {
                             nameText.setText(input.getText().toString());
-                        } else {
-                            Toast.makeText(AddClassActivity.this, "Invalid input. Name can only contain letters and no spaces.", Toast.LENGTH_LONG).show();
-                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
