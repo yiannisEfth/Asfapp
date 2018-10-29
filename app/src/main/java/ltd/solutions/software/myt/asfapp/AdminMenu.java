@@ -33,7 +33,6 @@ public class AdminMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent classes = new Intent(AdminMenu.this, ClassActivity.class);
                 startActivity(classes);
-                finish();
             }
         });
 
