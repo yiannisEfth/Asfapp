@@ -110,6 +110,10 @@
         android:id="@+id/profile_height_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+        android:layout_marginTop="320dp"
+>>>>>>> 0ab8cac7b37d36afc8173c4508c86c7ceb56dab0
         android:text="@string/register_telephone"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"

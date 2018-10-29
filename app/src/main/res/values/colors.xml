@@ -10,5 +10,6 @@
     <color name="app_color_sunny">#fef200</color>
     <color name="app_color_powder_blue">#B5DFCA</color>
     <color name="app_color_gray">#BCBDC0</color>
+    <color name="app_color_white">#FFFFFF</color>
     <color name="button_colour">#6C876B</color>
 </resources>
