@@ -44,6 +44,7 @@ public class ClientView_Activity extends AppCompatActivity {
         usersRecycler.setLayoutManager(mLayoutManager);
         usersRecycler.setItemAnimator(new DefaultItemAnimator());
         usersRecycler.setAdapter(userAdapter);
+        registerForContextMenu(usersRecycler);
         loadFromFB();
     }
 

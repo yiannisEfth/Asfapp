@@ -20,18 +20,21 @@
 
     <TextView
         android:id="@+id/class_date"
+        android:textColor="@color/app_color_white"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/class_name" />
 
     <TextView
         android:id="@+id/class_spots"
+        android:textColor="@color/app_color_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
     <TextView
         android:id="@+id/class_time"
+        android:textColor="@color/app_color_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/class_name"
@@ -39,6 +42,7 @@
 
     <TextView
         android:id="@+id/class_time_text"
+        android:textColor="@color/app_color_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/class_space_text"
@@ -47,6 +51,7 @@
 
     <TextView
         android:id="@+id/class_space_text"
+        android:textColor="@color/app_color_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
