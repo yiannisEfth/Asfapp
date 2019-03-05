@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Use of Firebase with no Internet Connection
+        database.getInstance().setPersistenceEnabled(true);
+        classesReference.keepSynced(true);
+
+        //Use of Firebase with no Internet Connection
+
         //Notifications
          AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
          Calendar calendar = Calendar.getInstance();
