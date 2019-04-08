@@ -16,11 +16,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, userSurname, isActive;
+        public TextView userName, userSurname,userId, isActive;
 
         public MyViewHolder(View view) {
             super(view);
             userName = (TextView) view.findViewById(R.id.user_name);
+            userId = (TextView) view.findViewById(R.id.user_id);
             userSurname = (TextView) view.findViewById(R.id.user_surname);
             isActive = (TextView) view.findViewById(R.id.isActive);
         }
@@ -44,6 +45,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
         User user = userList.get(position);
         holder.userSurname.setText(user.getSurname());
         holder.userName.setText(user.getName());
+        holder.userId.setText(String.valueOf(user.getId()));
         if (user.isActive) {
             holder.isActive.setText("Yes");
         } else {

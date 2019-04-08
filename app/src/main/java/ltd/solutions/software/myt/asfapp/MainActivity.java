@@ -50,12 +50,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Use of Firebase with no Internet Connection
-        database.getInstance().setPersistenceEnabled(true);
         classesReference.keepSynced(true);
-
-        //Use of Firebase with no Internet Connection
 
         //Notifications
          AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -74,13 +69,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setSelectedItemId(R.id.navigation_home);
         sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
-            //we are not connected to a network
-            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
-            this.finish();
-        }
+//        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
+//                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+//            //we are not connected to a network
+//            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
+//            this.finish();
+//        }
         checkFirstTime();
         deleteOldClasses();
 
@@ -225,13 +220,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onResume() {
         super.onResume();
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
-            //we are not connected to a network
-            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
-            this.finish();
-        }
+//        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED &&
+//                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+//            //we are not connected to a network
+//            Toast.makeText(this, "Please Connect To The Internet To Use The App", Toast.LENGTH_LONG).show();
+//            this.finish();
+//        }
     }
 
 

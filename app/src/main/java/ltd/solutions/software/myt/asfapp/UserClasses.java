@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,8 @@ public class UserClasses extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        classesReference.keepSynced(true);
+        usersReference.keepSynced(true);
         setContentView(R.layout.user_classes_activity);
         classesAdapter = new UserClassesAdapter(userClassesList, new OnClassAdapterClickListener() {
             @Override
