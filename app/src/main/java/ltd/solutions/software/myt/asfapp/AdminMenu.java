@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class AdminMenu extends AppCompatActivity {
-    Button register, viewClasses, viewClients;
+    Button register, viewClasses, viewClients, massEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class AdminMenu extends AppCompatActivity {
         register = (Button) findViewById(R.id.register_btn);
         viewClasses = (Button) findViewById(R.id.classes_btn);
         viewClients = (Button) findViewById(R.id.clients_btn);
+        massEdit = (Button) findViewById(R.id.mass_class_edit);
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,14 @@ public class AdminMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent clients = new Intent(AdminMenu.this, ClientView_Activity.class);
                 startActivity(clients);
+            }
+        });
+
+        massEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mass = new Intent(AdminMenu.this, MassClassEdit.class);
+                startActivity(mass);
             }
         });
     }
