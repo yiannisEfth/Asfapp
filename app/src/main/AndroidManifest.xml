@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme"
         android:name=".Asfapp">
         <activity
-            android:name=".SlashScreen"
+            android:name=".SplashScreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
