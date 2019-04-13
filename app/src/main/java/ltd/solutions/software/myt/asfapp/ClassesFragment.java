@@ -189,6 +189,7 @@ public class ClassesFragment extends Fragment {
                     usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(desiredClass.getID())).setValue(desiredClass.getClassName());
                     classesReference.child(String.valueOf(desiredClass.getID())).child("availablePlaces").setValue(desiredClass.getAvailablePlaces() - 1);
                     classesReference.child(String.valueOf(desiredClass.getID())).child("reservedPlaces").setValue(desiredClass.getReservedPlaces() + 1);
+                    classesReference.child(String.valueOf(desiredClass.getID())).child("Attending").child(input.getText().toString()).setValue("true");
                     desiredClass.setAvailablePlaces(desiredClass.getAvailablePlaces() - 1);
                     classesAdapter.notifyDataSetChanged();
                     Toast.makeText(getContext(), "Booking Successful!", Toast.LENGTH_LONG).show();
@@ -228,6 +229,7 @@ public class ClassesFragment extends Fragment {
                                                 usersReference.child(input.getText().toString()).child("Attending").child(String.valueOf(classObject3.getID())).setValue(classObject.getClassName());
                                                 classesReference.child(String.valueOf(classObject3.getID())).child("availablePlaces").setValue(classObject3.getAvailablePlaces() - 1);
                                                 classesReference.child(String.valueOf(classObject3.getID())).child("reservedPlaces").setValue(classObject3.getReservedPlaces() + 1);
+                                                classesReference.child(String.valueOf(classObject3.getID())).child("Attending").child(input.getText().toString()).setValue("true");
                                                 classObject3.setAvailablePlaces(classObject3.getAvailablePlaces() - 1);
                                                 classesAdapter.notifyDataSetChanged();
                                                 Toast.makeText(getContext(), "Booking Successful at " + classObject3.getClassDate(), Toast.LENGTH_LONG).show();
