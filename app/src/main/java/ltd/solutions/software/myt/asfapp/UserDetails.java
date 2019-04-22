@@ -120,6 +120,7 @@ public class UserDetails extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 usersReference.child(String.valueOf(user.getId())).removeValue();
                 Toast.makeText(UserDetails.this, "Client " + user.getName() + " " + user.getSurname() + " deleted.", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -21,6 +21,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("Password");
                 final EditText input = new EditText(this);
-                input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                input.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 builder.setView(input);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override

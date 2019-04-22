@@ -169,7 +169,7 @@ public class ClassesFragment extends Fragment {
         builder.setPositiveButton("Book", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                checkIfUserIsActive(input.getText().toString());
+                isUserActive = checkIfUserIsActive(input.getText().toString());
                 editor.putString("id", input.getText().toString());
                 editor.commit();
                 if (!Pattern.matches("\\b([1-8][0-9]{5}|9[0-8][0-9]{4}|99[0-8][0-9]{3}|999[0-8][0-9]{2}|9999[0-8][0-9]|99999[0-9])\\b", input.getText().toString())) {
