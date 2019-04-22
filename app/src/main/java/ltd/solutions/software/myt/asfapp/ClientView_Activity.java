@@ -2,6 +2,7 @@ package ltd.solutions.software.myt.asfapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ClientView_Activity extends AppCompatActivity {
 
     private RecyclerView usersRecycler;
-    private List<User> userList = new ArrayList<>();
+    public List<User> userList = new ArrayList<>();
     private UserAdapter userAdapter;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference usersReference = database.getReference("Users");
@@ -37,7 +38,12 @@ public class ClientView_Activity extends AppCompatActivity {
                 new OnUserAdapterClickListener() {
             @Override
             public void onItemClicked(User user) {
-                changeUserActiveInactive(user);
+//                changeUserActiveInactive(user);
+                Intent intent = new Intent(ClientView_Activity.this,UserDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user",user);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         usersRecycler = (RecyclerView) findViewById(R.id.clientList);
@@ -48,45 +54,45 @@ public class ClientView_Activity extends AppCompatActivity {
         loadFromFB();
     }
 
-    public void changeUserActiveInactive(final User user) {
-        if (user.isActive) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ClientView_Activity.this);
-            builder.setTitle("Mark This Client As Inactive?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    userList.clear();
-                    usersReference.child(String.valueOf(user.getId())).child("isActive").setValue(false);
-                    Toast.makeText(ClientView_Activity.this, "Client " + user.getName() + " " + user.getSurname() + " Is Now Inactive.", Toast.LENGTH_LONG).show();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            builder.show();
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ClientView_Activity.this);
-            builder.setTitle("Mark This Client As Active?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    userList.clear();
-                    usersReference.child(String.valueOf(user.getId())).child("isActive").setValue(true);
-                    Toast.makeText(ClientView_Activity.this, "Client " + user.getName() + " " + user.getSurname() + " Is Now Active.", Toast.LENGTH_LONG).show();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            builder.show();
-        }
-    }
+//    public void changeUserActiveInactive(final User user) {
+//        if (user.isActive) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(ClientView_Activity.this);
+//            builder.setTitle("Mark This Client As Inactive?");
+//            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    userList.clear();
+//                    usersReference.child(String.valueOf(user.getId())).child("isActive").setValue(false);
+//                    Toast.makeText(ClientView_Activity.this, "Client " + user.getName() + " " + user.getSurname() + " Is Now Inactive.", Toast.LENGTH_LONG).show();
+//                }
+//            });
+//            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    dialogInterface.cancel();
+//                }
+//            });
+//            builder.show();
+//        } else {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(ClientView_Activity.this);
+//            builder.setTitle("Mark This Client As Active?");
+//            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    userList.clear();
+//                    usersReference.child(String.valueOf(user.getId())).child("isActive").setValue(true);
+//                    Toast.makeText(ClientView_Activity.this, "Client " + user.getName() + " " + user.getSurname() + " Is Now Active.", Toast.LENGTH_LONG).show();
+//                }
+//            });
+//            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    dialogInterface.cancel();
+//                }
+//            });
+//            builder.show();
+//        }
+//    }
 
     public void loadFromFB() {
         usersReference.addValueEventListener(new ValueEventListener() {

@@ -1,6 +1,8 @@
 package ltd.solutions.software.myt.asfapp;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     public String name, surname, email, phone;
     public int id;
     public boolean isActive;
