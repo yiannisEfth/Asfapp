@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:397632649038:android:d67239b21d5a03cd",
         "android_client_info": {
-          "package_name": "ltd.solutions.software.myt.asfapp"
+          "package_name": "ltd.solution.software.myt.asfapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "397632649038-tuknesa295juk3mfv0glqhu7bvcrso0a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ltd.solutions.software.myt.asfapp",
+            "package_name": "ltd.solution.software.myt.asfapp",
             "certificate_hash": "88ec777db05d629ab123ebee6dafb8fb673ac344"
           }
         },
