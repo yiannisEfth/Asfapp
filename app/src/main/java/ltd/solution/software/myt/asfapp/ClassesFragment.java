@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -59,6 +61,11 @@ public class ClassesFragment extends Fragment {
     private List<Integer> attending = new ArrayList<>();
     private int ids;
 
+    //CalendarView 14/09/2020
+    CalendarView calendarView;
+    private DatePickerDialog.OnDateSetListener date1;
+    //CalendarView
+
 
     @Nullable
     @Override
@@ -89,17 +96,22 @@ public class ClassesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button dateBtn = (Button) getView().findViewById(R.id.datespinner);
+        //Button dateBtn = (Button) getView().findViewById(R.id.datespinner);
         final ClassComparator comparator = new ClassComparator();
         calendar = Calendar.getInstance();
 
+        //CalendarView 14/09/2020
+        calendarView = getView().findViewById(R.id.calendar);
+        //CalendarView
+
         //making the datepicked variable the same as the date picked from the calendar
-        date = new DatePickerDialog.OnDateSetListener() {
+       /** date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                 String formatDate = "dd/MM/yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(formatDate, Locale.US);
                 datePicked = sdf.format(calendar.getTime());
@@ -113,9 +125,10 @@ public class ClassesFragment extends Fragment {
                 Collections.sort(classesList, comparator);
                 classesAdapter.notifyDataSetChanged();
             }
-        };
+        };*/
+
         //Show the calendar to pick a date
-        dateBtn.setOnClickListener(new View.OnClickListener() {
+        /**dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -124,6 +137,35 @@ public class ClassesFragment extends Fragment {
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
 
 
+            }
+        });*/
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                String formatDate = "dd/MM/yyyy";
+                int monthNumber=i1+1;
+                SimpleDateFormat sdf = new SimpleDateFormat(formatDate, Locale.US);
+                String day = Integer.toString(i2);
+                String month = Integer.toString(monthNumber);
+                String year = Integer.toString(i);
+                if(i2<10){
+                    day="0"+i2;
+                }
+                if(monthNumber<10){
+                    month="0"+(monthNumber);
+                }
+                datePicked = day +"/" + (month) + "/" + year;
+                Log.d("Log","date= "+datePicked);
+                classesList.clear();
+                for (ClassObject co : dummyList) {
+                    if (datePicked.equals(co.getClassDate())) {
+                        classesList.add(co);
+                    }
+                }
+
+                Collections.sort(classesList, comparator);
+                classesAdapter.notifyDataSetChanged();
             }
         });
     }
