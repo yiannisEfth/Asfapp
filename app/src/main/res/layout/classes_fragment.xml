@@ -15,12 +15,14 @@
         android:textColor="@color/colorPrimary"/>
 
     <CalendarView
+        android:layout_weight="1"
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/app_color_white" />
 
     <android.support.v7.widget.RecyclerView
+        android:layout_weight="1"
         android:id="@+id/classView"
         android:layout_width="match_parent"
         android:layout_height="302dp" />
